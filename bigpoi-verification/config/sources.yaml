@@ -16,6 +16,34 @@ global:
   # 重试次数
   retry_count: 3
 
+# API Key 凭据资源池（支持多 Key 与 Referer 配置，由程序逻辑映射调用）
+credentials:
+  amap:
+    - ak: "9f2fee2d08448231243efb26476e3625"
+      referer: "" # 如果绑定了 Referer，请填写具体域名，否则为空
+    #- ak: "YOUR_AMAP_API_KEY_2"
+      referer: "https://example.com"
+  bmap:
+    - ak: "2xBld7istSKnGGcNmGrHgQUO1TjuM2Cm"
+      referer: "https://xnova.com/"
+    - ak: "F394d2819a214c06d340783634ab1e36"
+      referer: "http://www.jiuguijiu000799.com/"
+    - ak: "cc20lYsz3cGWBVaIfzGYqCGBNzOZMsHX"
+      referer: "https://ditu.city8.com/"
+    - ak: "g1axqYWMnGnioP0gVcMmmW8WUPAF8m6p"
+      referer: ""      
+    - ak: "rq04plvocQ1hVH8ENvSfXLIqosIEAHnP"
+      referer: ""      
+    - ak: "k2SX2SmJqCl0u3352QFjZy7bqSawVwnL"
+      referer: ""      
+    - ak: "XKMwWHpJhbXG6WmStnfy13ly09noAeRc"
+      referer: ""
+  qmap:
+    - key: "MGVBZ-MTTKW-LB3RI-O5YDH-5QNVO-CVFNC"
+      referer: "https://www.hangfw.com/"
+    - key: "YOUR_QMAP_API_KEY_2"
+      referer: ""
+
 # POI类型分类及对应情报源
 poi_categories:
   # ==================== 医疗机构 ====================
@@ -58,6 +86,7 @@ poi_categories:
         type: "map_vendor"
         url: "https://www.amap.com/"
         api_endpoint: "https://restapi.amap.com/v3/place/text"
+        api_key_ref: "amap"
         weight: 0.85
         description: "高德地图POI数据"
         update_frequency: "周度"
@@ -66,6 +95,7 @@ poi_categories:
         type: "map_vendor"
         url: "https://map.baidu.com/"
         api_endpoint: "https://api.map.baidu.com/place/v2/search"
+        api_key_ref: "bmap"
         weight: 0.85
         description: "百度地图POI数据"
         update_frequency: "周度"
@@ -74,6 +104,7 @@ poi_categories:
         type: "map_vendor"
         url: "https://map.qq.com/"
         api_endpoint: "https://apis.map.qq.com/ws/place/v1/search"
+        api_key_ref: "qmap"
         weight: 0.8
         description: "腾讯地图POI数据"
         update_frequency: "周度"
