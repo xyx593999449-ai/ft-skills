@@ -1,0 +1,171 @@
+# Big POI 核实技能配置文件
+# 版本: 1.0.0
+# 说明: 本文件定义了大POI核实技能的基本属性和支持的POI类型
+
+# 技能基本信息
+skill:
+  name: "bigpoi-verification"
+  version: "1.0.0"
+  description: "自动化核实大POI数据（如三甲医院、政府机关、机场等）的真实性、名称、空间位置与分类准确性"
+  author: "BigPOI Verification Team"
+  created_at: "2024-01-15"
+  updated_at: "2024-01-15"
+  status: "beta"
+
+# 技能执行配置
+execution:
+  # 是否启用异步并行处理
+  async_enabled: true
+
+  # 最大并发任务数
+  max_concurrent_tasks: 10
+
+  # 数据采集超时时间（秒）
+  collection_timeout: 30
+
+  # 爬虫服务超时时间（秒）
+  web_crawler_timeout: 30
+
+  # 是否启用Web爬虫功能
+  enable_web_crawler: true
+
+# 支持的POI类型白名单
+# 大POI是指在地图产品、监管审图或用户核心使用场景中具有高度重要性和公共影响力的兴趣点
+supported_poi_types:
+  - type: "hospital"
+    name: "医疗机构"
+    description: "三甲医院等医疗机构"
+    enabled: true
+
+  - type: "government"
+    name: "政府机关"
+    description: "国家级/省级/地市级/区县级政府机关"
+    enabled: true
+
+  - type: "police"
+    name: "公安机关"
+    description: "公安部门、派出所等"
+    enabled: true
+
+  - type: "court"
+    name: "法院"
+    description: "各级人民法院"
+    enabled: true
+
+  - type: "procuratorate"
+    name: "检察院"
+    description: "各级人民检察院"
+    enabled: true
+
+  - type: "scenic"
+    name: "景区"
+    description: "4A/5A景区、世界遗产"
+    enabled: true
+
+  - type: "museum"
+    name: "博物馆"
+    description: "各类博物馆"
+    enabled: true
+
+  - type: "university"
+    name: "高等院校"
+    description: "大学、高等学校"
+    enabled: true
+
+  - type: "airport"
+    name: "机场"
+    description: "民用机场、国际机场"
+    enabled: true
+
+  - type: "railway_station"
+    name: "火车站"
+    description: "铁路车站、高铁站"
+    enabled: true
+
+# 输入数据必需字段
+required_input_fields:
+  - "poi_id"
+  - "name"
+  - "poi_type"
+  - "city"
+
+# 输入数据可选字段
+optional_input_fields:
+  - "address"
+  - "coordinates"
+  - "phone"
+  - "website"
+  - "postcode"
+  - "category_code"
+  - "source"
+  - "source_id"
+  - "collect_time"
+  - "remark"
+  - "tags"
+  - "metadata"
+
+# 输出决策状态
+decision_statuses:
+  - "accepted"           # 接受：核实通过，可直接采纳
+  - "downgraded"         # 降级：需人工复核
+  - "manual_review"      # 人工复核：信息不足或存在冲突
+  - "rejected"           # 拒绝：不符合要求或有重大问题
+
+# 降级触发条件编码
+downgrade_reasons:
+  - code: "INSUFFICIENT_CONFIDENCE"
+    description: "整体置信度不足"
+
+  - code: "DIMENSION_MISMATCH"
+    description: "关键维度置信度不足"
+
+  - code: "DATA_CONFLICT"
+    description: "多源信息冲突"
+
+  - code: "INSUFFICIENT_EVIDENCE"
+    description: "证据数量不足"
+
+  - code: "EXISTENCE_UNCERTAIN"
+    description: "存在性不确定"
+
+  - code: "NAME_MISMATCH"
+    description: "名称相似度不足"
+
+  - code: "LOCATION_DEVIATION"
+    description: "位置距离偏离"
+
+  - code: "CATEGORY_MISMATCH"
+    description: "分类不匹配"
+
+  - code: "ADMINISTRATIVE_ERROR"
+    description: "行政区错误"
+
+  - code: "OUTDATED_DATA"
+    description: "数据过期"
+
+  - code: "SENSITIVE_DATA"
+    description: "敏感数据处理"
+
+  - code: "MISSING_OFFICIAL_SOURCE"
+    description: "缺失官方来源"
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "./logs/bigpoi_verification.log"
+  max_file_size: 104857600  # 100MB
+  backup_count: 10
+
+# 数据源配置路径
+config_paths:
+  sources: "../config/sources.yaml"
+  thresholds: "../config/thresholds.yaml"
+  downgrade: "../config/downgrade.yaml"
+
+# 模式定义路径
+schema_paths:
+  input: "../schema/input.schema.json"
+  evidence: "../schema/evidence.schema.json"
+  decision: "../schema/decision.schema.json"
+  record: "../schema/record.schema.json"
