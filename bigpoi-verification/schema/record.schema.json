@@ -1,0 +1,448 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ft-git.sf-express.com/ft-scaffold/ai-skills/schemas/record.schema.json",
+  "title": "POI核实记录模式",
+  "description": "定义大POI核实技能的最终入库记录标准化格式，支持审计和责任追溯",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["record_id", "poi_id", "input_data", "verification_result", "audit_trail", "created_at"],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "description": "记录唯一标识符",
+      "minLength": 1,
+      "maxLength": 64,
+      "examples": ["REC_202401150001"]
+    },
+    "poi_id": {
+      "type": "string",
+      "description": "POI标识符",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "input_data": {
+      "type": "object",
+      "description": "原始输入数据",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "poi_type": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "longitude": {
+              "type": "number"
+            },
+            "latitude": {
+              "type": "number"
+            }
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "verification_result": {
+      "type": "object",
+      "description": "核实结果",
+      "required": ["status", "confidence", "final_values"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "核实状态",
+          "enum": ["verified", "modified", "rejected", "manual_review_pending"],
+          "examples": ["verified"]
+        },
+        "confidence": {
+          "type": "number",
+          "description": "最终置信度",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "final_values": {
+          "type": "object",
+          "description": "核实后的最终值",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "核实后的名称"
+            },
+            "name_confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "address": {
+              "type": "string",
+              "description": "核实后的地址"
+            },
+            "address_confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "coordinates": {
+              "type": "object",
+              "description": "核实后的坐标",
+              "properties": {
+                "longitude": {
+                  "type": "number"
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            },
+            "category": {
+              "type": "string",
+              "description": "核实后的分类"
+            },
+            "category_confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "city": {
+              "type": "string",
+              "description": "核实后的城市"
+            },
+            "city_confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "changes": {
+          "type": "array",
+          "description": "变更记录",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "description": "变更字段"
+              },
+              "old_value": {
+                "type": "string",
+                "description": "原值"
+              },
+              "new_value": {
+                "type": "string",
+                "description": "新值"
+              },
+              "reason": {
+                "type": "string",
+                "description": "变更原因"
+              }
+            }
+          }
+        }
+      }
+    },
+    "decision_ref": {
+      "type": "string",
+      "description": "关联的决策ID",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "evidence_refs": {
+      "type": "array",
+      "description": "引用的证据ID列表",
+      "items": {
+        "type": "string"
+      }
+    },
+    "audit_trail": {
+      "type": "object",
+      "description": "审计追踪信息",
+      "required": ["created_by", "created_at"],
+      "properties": {
+        "created_by": {
+          "type": "string",
+          "description": "创建者（系统或人工）",
+          "examples": ["system", "user_001"]
+        },
+        "created_at": {
+          "type": "string",
+          "description": "创建时间",
+          "format": "date-time"
+        },
+        "verified_by": {
+          "type": "string",
+          "description": "人工审核者（如有人工介入）",
+          "maxLength": 64
+        },
+        "verified_at": {
+          "type": "string",
+          "description": "人工审核时间",
+          "format": "date-time"
+        },
+        "verification_notes": {
+          "type": "string",
+          "description": "人工审核备注",
+          "maxLength": 1000
+        },
+        "reviewed_by": {
+          "type": "string",
+          "description": "复核人员",
+          "maxLength": 64
+        },
+        "reviewed_at": {
+          "type": "string",
+          "description": "复核时间",
+          "format": "date-time"
+        },
+        "version_history": {
+          "type": "array",
+          "description": "版本历史",
+          "items": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "operator": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "quality_metrics": {
+      "type": "object",
+      "description": "质量指标",
+      "properties": {
+        "dimension_scores": {
+          "type": "object",
+          "description": "各维度评分",
+          "properties": {
+            "existence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "name": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "location": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "category": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "administrative": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "timeliness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "evidence_quality": {
+          "type": "number",
+          "description": "证据质量评分",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source_diversity": {
+          "type": "number",
+          "description": "来源多样性评分",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "flags": {
+      "type": "object",
+      "description": "标记信息",
+      "properties": {
+        "is_sensitive": {
+          "type": "boolean",
+          "description": "是否敏感数据"
+        },
+        "is_disputed": {
+          "type": "boolean",
+          "description": "是否存在争议"
+        },
+        "requires_periodic_review": {
+          "type": "boolean",
+          "description": "是否需要定期复核"
+        },
+        "review_period_days": {
+          "type": "integer",
+          "description": "复核周期（天）",
+          "minimum": 1
+        },
+        "tags": {
+          "type": "array",
+          "description": "标签列表",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "扩展元数据",
+      "properties": {
+        "skill_version": {
+          "type": "string",
+          "description": "技能版本"
+        },
+        "processing_time_ms": {
+          "type": "integer",
+          "description": "处理耗时（毫秒）"
+        },
+        "data_sources": {
+          "type": "array",
+          "description": "使用的数据源",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rules_applied": {
+          "type": "array",
+          "description": "应用的规则",
+          "items": {
+            "type": "string"
+          }
+        },
+        "custom_fields": {
+          "type": "object",
+          "description": "自定义字段",
+          "additionalProperties": true
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "记录创建时间",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "记录更新时间",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "记录过期时间（用于定期复核）",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "record_id": "REC_202401150001",
+      "poi_id": "HOSPITAL_BJ_001",
+      "input_data": {
+        "name": "北京大学第一医院",
+        "poi_type": "hospital",
+        "city": "北京市",
+        "address": "北京市西城区西什库大街8号",
+        "coordinates": {
+          "longitude": 116.3723,
+          "latitude": 39.9342
+        },
+        "source": "官方导入"
+      },
+      "verification_result": {
+        "status": "verified",
+        "confidence": 0.92,
+        "final_values": {
+          "name": "北京大学第一医院",
+          "name_confidence": 1.0,
+          "address": "北京市西城区西什库大街8号",
+          "address_confidence": 0.95,
+          "coordinates": {
+            "longitude": 116.3723,
+            "latitude": 39.9342,
+            "confidence": 0.90
+          },
+          "category": "综合医院",
+          "category_confidence": 0.95,
+          "city": "北京市",
+          "city_confidence": 1.0
+        },
+        "changes": []
+      },
+      "decision_ref": "DEC_202401150001",
+      "evidence_refs": ["EVD_001", "EVD_002", "EVD_003"],
+      "audit_trail": {
+        "created_by": "system",
+        "created_at": "2024-01-15T08:40:05Z",
+        "version_history": [
+          {
+            "version": "1.0.0",
+            "timestamp": "2024-01-15T08:40:05Z",
+            "operator": "system",
+            "action": "auto_verified"
+          }
+        ]
+      },
+      "quality_metrics": {
+        "dimension_scores": {
+          "existence": 0.95,
+          "name": 1.0,
+          "location": 0.90,
+          "category": 0.95,
+          "administrative": 0.95,
+          "timeliness": 0.90
+        },
+        "evidence_quality": 0.93,
+        "source_diversity": 0.85
+      },
+      "flags": {
+        "is_sensitive": false,
+        "is_disputed": false,
+        "requires_periodic_review": true,
+        "review_period_days": 365,
+        "tags": ["三甲", "综合医院", "高置信度"]
+      },
+      "metadata": {
+        "skill_version": "1.0.0",
+        "processing_time_ms": 5000,
+        "data_sources": ["NHC", "AMAP", "BAIDU"],
+        "rules_applied": ["name_match", "location_verify", "category_check"]
+      },
+      "created_at": "2024-01-15T08:40:05Z",
+      "updated_at": "2024-01-15T08:40:05Z",
+      "expires_at": "2025-01-15T08:40:05Z"
+    }
+  ]
+}
