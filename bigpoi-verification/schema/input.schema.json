@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ft-git.sf-express.com/ft-scaffold/ai-skills/schemas/input.schema.json",
+  "title": "POI核实输入数据模式",
+  "description": "定义大POI核实技能的输入数据标准化格式",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["poi_id", "name", "poi_type", "city"],
+  "properties": {
+    "poi_id": {
+      "type": "string",
+      "description": "POI唯一标识符",
+      "minLength": 1,
+      "maxLength": 64,
+      "examples": ["POI_202401150001", "HOSPITAL_BJ_001"]
+    },
+    "name": {
+      "type": "string",
+      "description": "POI名称",
+      "minLength": 1,
+      "maxLength": 200,
+      "examples": ["北京大学第一医院", "北京市人民政府"]
+    },
+    "poi_type": {
+      "type": "string",
+      "description": "POI类型（大POI类）",
+      "enum": [
+        "hospital",
+        "government",
+        "police",
+        "court",
+        "procuratorate",
+        "scenic",
+        "museum",
+        "university",
+        "airport",
+        "railway_station"
+      ],
+      "examples": ["hospital", "government"]
+    },
+    "city": {
+      "type": "string",
+      "description": "所属城市或行政区",
+      "minLength": 1,
+      "maxLength": 100,
+      "examples": ["北京市", "上海市浦东新区"]
+    },
+    "address": {
+      "type": "string",
+      "description": "详细地址",
+      "maxLength": 500,
+      "examples": ["北京市西城区西什库大街8号"]
+    },
+    "coordinates": {
+      "type": "object",
+      "description": "地理坐标信息",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "description": "经度",
+          "minimum": 73.5,
+          "maximum": 135.1,
+          "examples": [116.3974]
+        },
+        "latitude": {
+          "type": "number",
+          "description": "纬度",
+          "minimum": 3.5,
+          "maximum": 53.6,
+          "examples": [39.9042]
+        },
+        "coordinate_system": {
+          "type": "string",
+          "description": "坐标系类型",
+          "enum": ["WGS84", "GCJ02", "BD09"],
+          "default": "WGS84"
+        },
+        "accuracy": {
+          "type": "number",
+          "description": "坐标精度（米）",
+          "minimum": 0,
+          "examples": [10.5]
+        }
+      },
+      "required": ["longitude", "latitude"]
+    },
+    "phone": {
+      "type": "string",
+      "description": "联系电话",
+      "pattern": "^1[3-9]\\d{9}$|^(0\\d{2,3}-?)?\\d{7,8}$",
+      "examples": ["010-12345678"]
+    },
+    "website": {
+      "type": "string",
+      "description": "官方网站",
+      "format": "uri",
+      "maxLength": 500,
+      "examples": ["https://www.pkuhospital.com"]
+    },
+    "postcode": {
+      "type": "string",
+      "description": "邮政编码",
+      "pattern": "^\\d{6}$",
+      "examples": ["100034"]
+    },
+    "category_code": {
+      "type": "string",
+      "description": "分类编码",
+      "maxLength": 50,
+      "examples": ["090100", "010101"]
+    },
+    "source": {
+      "type": "string",
+      "description": "数据来源",
+      "maxLength": 100,
+      "examples": ["用户采集", "第三方数据", "官方导入"]
+    },
+    "source_id": {
+      "type": "string",
+      "description": "来源系统ID",
+      "maxLength": 100,
+      "examples": ["SOURCE_001_12345"]
+    },
+    "collect_time": {
+      "type": "string",
+      "description": "数据采集时间",
+      "format": "date-time",
+      "examples": ["2024-01-15T08:30:00Z"]
+    },
+    "remark": {
+      "type": "string",
+      "description": "备注信息",
+      "maxLength": 1000,
+      "examples": ["原名为北京大学第一医院，2023年更名"]
+    },
+    "tags": {
+      "type": "array",
+      "description": "标签列表",
+      "items": {
+        "type": "string",
+        "maxLength": 50
+      },
+      "examples": [["三甲", "综合医院", "医保定点"]]
+    },
+    "metadata": {
+      "type": "object",
+      "description": "扩展元数据",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "poi_id": "HOSPITAL_BJ_001",
+      "name": "北京大学第一医院",
+      "poi_type": "hospital",
+      "city": "北京市",
+      "address": "北京市西城区西什库大街8号",
+      "coordinates": {
+        "longitude": 116.3723,
+        "latitude": 39.9342,
+        "coordinate_system": "WGS84"
+      },
+      "phone": "010-83572211",
+      "postcode": "100034",
+      "source": "官方导入",
+      "collect_time": "2024-01-15T08:30:00Z"
+    }
+  ]
+}
