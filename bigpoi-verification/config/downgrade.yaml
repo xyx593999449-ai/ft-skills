@@ -1,0 +1,599 @@
+# POI核实降级策略配置文件
+# 版本: 1.0
+# 说明: 本文件定义了POI核实过程中的降级触发条件、策略和处理流程
+# 降级原则: 宁可少判，不可错判；宁可降级，不可越权
+
+# ==================== 全局降级配置 ====================
+global:
+  # 降级策略开关
+  enabled: true
+  
+  # 默认降级处理方式
+  default_action: "manual_review"
+  
+  # 降级结果状态
+  downgrade_status: "downgraded"
+  
+  # 是否记录降级日志
+  log_downgrade: true
+  
+  # 降级日志保留天数
+  log_retention_days: 365
+
+# ==================== 降级触发条件 ====================
+triggers:
+  name: "降级触发条件"
+  description: "定义触发降级转人工核实的各类条件"
+  
+  # 条件组合逻辑: AND(所有must条件必须满足) OR(任一should条件满足)
+  logic:
+    must_all: false  # 不需要满足所有条件
+    should_any: true # 满足任一条件即触发
+  
+  conditions:
+    # 条件1: 整体置信度不足
+    - id: "LOW_OVERALL_CONFIDENCE"
+      name: "整体置信度不足"
+      description: "POI整体置信度低于阈值"
+      enabled: true
+      priority: 1
+      severity: "high"
+      criteria:
+        metric: "overall_confidence"
+        operator: "<"
+        threshold: 0.60
+      action: "manual_review"
+      message: "整体置信度{value}低于阈值{threshold}，需人工复核"
+    
+    # 条件2: 关键维度置信度不足
+    - id: "LOW_DIMENSION_CONFIDENCE"
+      name: "关键维度置信度不足"
+      description: "存在性、名称或位置维度置信度不足"
+      enabled: true
+      priority: 1
+      severity: "high"
+      criteria:
+        metric: "dimension_confidence"
+        dimensions: ["existence", "name", "location"]
+        operator: "<"
+        threshold: 0.70
+        match_mode: "any"  # any:任一维度满足即触发, all:所有维度满足才触发
+      action: "manual_review"
+      message: "关键维度{dimension}置信度{value}不足，需人工复核"
+    
+    # 条件3: 多源信息冲突
+    - id: "SOURCE_CONFLICT"
+      name: "多源信息冲突"
+      description: "多个高可信度来源之间存在显著冲突"
+      enabled: true
+      priority: 1
+      severity: "high"
+      criteria:
+        metric: "source_agreement"
+        operator: "<"
+        threshold: 0.50
+        min_sources: 2
+        high_weight_sources: true
+      action: "manual_review"
+      message: "多源信息存在显著冲突，一致性{value}低于阈值"
+    
+    # 条件4: 证据不足
+    - id: "INSUFFICIENT_EVIDENCE"
+      name: "证据不足"
+      description: "有效证据数量低于最低要求"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "evidence_count"
+        operator: "<"
+        threshold: 2
+      action: "manual_review"
+      message: "证据数量{value}不足，低于最低要求{threshold}"
+    
+    # 条件5: 存在性不确定
+    - id: "EXISTENCE_UNCERTAIN"
+      name: "存在性不确定"
+      description: "无法确认POI是否存在"
+      enabled: true
+      priority: 1
+      severity: "critical"
+      criteria:
+        metric: "existence_status"
+        operator: "in"
+        values: ["uncertain", "unlikely", "non_existent"]
+      action: "manual_review"
+      message: "POI存在性状态为{value}，无法确认真实性"
+    
+    # 条件6: 名称相似度过低
+    - id: "LOW_NAME_SIMILARITY"
+      name: "名称相似度过低"
+      description: "POI名称与参考来源差异过大"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "name_similarity"
+        operator: "<"
+        threshold: 0.70
+      action: "manual_review"
+      message: "名称相似度{value}过低，可能存在命名错误"
+    
+    # 条件7: 位置偏差过大
+    - id: "LARGE_LOCATION_DEVIATION"
+      name: "位置偏差过大"
+      description: "POI位置与参考位置偏差超过阈值"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "location_distance"
+        operator: ">"
+        threshold: 500
+        unit: "meters"
+      action: "manual_review"
+      message: "位置偏差{value}米，超过阈值{threshold}米"
+    
+    # 条件8: 分类不匹配
+    - id: "CATEGORY_MISMATCH"
+      name: "分类不匹配"
+      description: "POI分类与实体属性明显不符"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "category_match"
+        operator: "<"
+        threshold: 0.50
+      action: "manual_review"
+      message: "分类匹配度{value}过低，类型可能错误"
+    
+    # 条件9: 敏感数据
+    - id: "SENSITIVE_DATA"
+      name: "敏感数据"
+      description: "POI涉及敏感机构或关键词"
+      enabled: true
+      priority: 0
+      severity: "critical"
+      criteria:
+        metric: "sensitive_keywords"
+        operator: "contains_any"
+        keywords: ["监狱", "看守所", "军队", "军事", "保密", "国安", "情报", "国防", "武警", "边防"]
+      action: "manual_review"
+      message: "检测到敏感关键词'{keyword}'，需人工审核"
+    
+    # 条件10: 数据过期
+    - id: "OUTDATED_DATA"
+      name: "数据过期"
+      description: "POI数据超过有效期"
+      enabled: true
+      priority: 3
+      severity: "low"
+      criteria:
+        metric: "data_age"
+        operator: ">"
+        threshold: 365
+        unit: "days"
+      action: "manual_review"
+      message: "数据已过期{value}天，需更新核实"
+    
+    # 条件11: 多维度同时异常
+    - id: "MULTI_DIMENSION_ANOMALY"
+      name: "多维度同时异常"
+      description: "多个维度同时出现不确定或失败结果"
+      enabled: true
+      priority: 1
+      severity: "high"
+      criteria:
+        metric: "dimension_failure_count"
+        operator: ">="
+        threshold: 2
+        dimensions: ["existence", "name", "location", "category"]
+        status: ["fail", "uncertain"]
+      action: "manual_review"
+      message: "{count}个维度出现异常，需人工综合判断"
+    
+    # 条件12: 行政区划异常
+    - id: "ADMINISTRATIVE_ANOMALY"
+      name: "行政区划异常"
+      description: "POI位置与行政区划明显不符"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "administrative_match"
+        operator: "<"
+        threshold: 0.50
+      action: "manual_review"
+      message: "行政区划匹配度{value}异常，位置可能错误"
+    
+    # 条件13: 变更风险
+    - id: "CHANGE_RISK"
+      name: "变更风险"
+      description: "检测到POI可能发生变更"
+      enabled: true
+      priority: 2
+      severity: "medium"
+      criteria:
+        metric: "change_status"
+        operator: "in"
+        values: ["merged", "relocated", "renamed", "suspended"]
+      action: "manual_review"
+      message: "POI状态为{value}，可能存在变更风险"
+    
+    # 条件14: 输入数据异常
+    - id: "INPUT_DATA_ANOMALY"
+      name: "输入数据异常"
+      description: "输入数据格式错误或关键字段缺失"
+      enabled: true
+      priority: 0
+      severity: "high"
+      criteria:
+        metric: "input_validity"
+        operator: "=="
+        value: false
+      action: "reject"
+      message: "输入数据异常: {error_details}"
+    
+    # 条件15: 不在技能范围内
+    - id: "OUT_OF_SCOPE"
+      name: "不在技能范围内"
+      description: "POI类型不在本技能支持范围内"
+      enabled: true
+      priority: 0
+      severity: "low"
+      criteria:
+        metric: "poi_type_supported"
+        operator: "=="
+        value: false
+      action: "reject"
+      message: "POI类型'{poi_type}'不在技能支持范围内"
+
+# ==================== 业务场景降级策略 ====================
+scenarios:
+  name: "业务场景降级策略"
+  description: "针对不同业务场景的差异化降级处理策略"
+  
+  scenarios:
+    # 场景1: 批量数据核实
+    - id: "BATCH_VERIFICATION"
+      name: "批量数据核实"
+      description: "大批量POI数据的自动化核实场景"
+      enabled: true
+      priority_adjustment: 0
+      thresholds:
+        confidence: 0.70
+        evidence_count: 2
+      auto_accept:
+        enabled: true
+        max_records: 1000
+      manual_review:
+        enabled: true
+        batch_size: 100
+        sampling_rate: 0.10
+      
+    # 场景2: 增量数据更新
+    - id: "INCREMENTAL_UPDATE"
+      name: "增量数据更新"
+      description: "新增POI数据的核实场景"
+      enabled: true
+      priority_adjustment: -1
+      thresholds:
+        confidence: 0.75
+        evidence_count: 3
+      auto_accept:
+        enabled: false
+      manual_review:
+        enabled: true
+        required: true
+      
+    # 场景3: 存量数据质检
+    - id: "QUALITY_INSPECTION"
+      name: "存量数据质检"
+      description: "对已有POI数据进行质量抽检"
+      enabled: true
+      priority_adjustment: 1
+      thresholds:
+        confidence: 0.65
+        evidence_count: 2
+      sampling:
+        enabled: true
+        rate: 0.05
+        stratified: true
+      
+    # 场景4: 高风险数据核实
+    - id: "HIGH_RISK_VERIFICATION"
+      name: "高风险数据核实"
+      description: "涉及重要机构或敏感区域的数据核实"
+      enabled: true
+      priority_adjustment: -2
+      thresholds:
+        confidence: 0.90
+        evidence_count: 4
+      auto_accept:
+        enabled: false
+      manual_review:
+        enabled: true
+        required: true
+        senior_reviewer: true
+      
+    # 场景5: 多源冲突处理
+    - id: "MULTI_SOURCE_CONFLICT"
+      name: "多源冲突处理"
+      description: "多数据源存在冲突时的特殊处理"
+      enabled: true
+      priority_adjustment: -1
+      thresholds:
+        source_agreement: 0.70
+      conflict_resolution:
+        strategy: "highest_weight_wins"
+        tie_breaker: "manual_review"
+      
+    # 场景6: 紧急业务需求
+    - id: "URGENT_BUSINESS"
+      name: "紧急业务需求"
+      description: "业务紧急需求下的快速核实"
+      enabled: true
+      priority_adjustment: 2
+      thresholds:
+        confidence: 0.55
+        evidence_count: 1
+      auto_accept:
+        enabled: true
+        with_warning: true
+      manual_review:
+        enabled: true
+        post_hoc: true
+
+# ==================== 人工介入优先级 ====================
+priorities:
+  name: "人工介入优先级"
+  description: "定义人工复核任务的优先级等级和处理顺序"
+  
+  levels:
+    # 优先级0: 最高优先级
+    - level: 0
+      name: "critical"
+      description: "最高优先级，需立即处理"
+      conditions: ["SENSITIVE_DATA", "INPUT_DATA_ANOMALY", "OUT_OF_SCOPE"]
+      sla_minutes: 30
+      notification: ["sms", "email", "im"]
+      escalation: true
+      escalation_minutes: 60
+      
+    # 优先级1: 高优先级
+    - level: 1
+      name: "high"
+      description: "高优先级，需尽快处理"
+      conditions: ["LOW_OVERALL_CONFIDENCE", "LOW_DIMENSION_CONFIDENCE", "SOURCE_CONFLICT", "EXISTENCE_UNCERTAIN", "MULTI_DIMENSION_ANOMALY"]
+      sla_minutes: 120
+      notification: ["email", "im"]
+      escalation: true
+      escalation_minutes: 240
+      
+    # 优先级2: 中优先级
+    - level: 2
+      name: "medium"
+      description: "中优先级，按正常流程处理"
+      conditions: ["INSUFFICIENT_EVIDENCE", "LOW_NAME_SIMILARITY", "LARGE_LOCATION_DEVIATION", "CATEGORY_MISMATCH", "ADMINISTRATIVE_ANOMALY", "CHANGE_RISK"]
+      sla_minutes: 480
+      notification: ["email"]
+      escalation: false
+      
+    # 优先级3: 低优先级
+    - level: 3
+      name: "low"
+      description: "低优先级，可延后处理"
+      conditions: ["OUTDATED_DATA"]
+      sla_minutes: 1440
+      notification: []
+      escalation: false
+  
+  # 优先级动态调整规则
+  dynamic_adjustment:
+    enabled: true
+    rules:
+      - condition: "queue_length > 100"
+        action: "increase_priority"
+        value: 1
+      - condition: "business_hours == false"
+        action: "decrease_priority"
+        value: 1
+      - condition: "vip_customer == true"
+        action: "increase_priority"
+        value: 2
+
+# ==================== 降级处理流程参数 ====================
+workflow:
+  name: "降级处理流程"
+  description: "定义降级后的处理流程和操作参数"
+  
+  # 降级任务创建
+  task_creation:
+    auto_create: true
+    task_type: "manual_verification"
+    assign_strategy: "round_robin"
+    default_assignee: "verification_team"
+  
+  # 任务分配规则
+  assignment:
+    rules:
+      - condition: "priority == 0"
+        assignee: "senior_verifier"
+        max_tasks: 5
+      - condition: "priority == 1"
+        assignee: "experienced_verifier"
+        max_tasks: 20
+      - condition: "priority >= 2"
+        assignee: "general_verifier"
+        max_tasks: 50
+    
+    # 负载均衡
+    load_balancing:
+      enabled: true
+      max_queue_length: 100
+      redistribution_threshold: 0.8
+  
+  # 处理时限
+  deadlines:
+    critical: "30m"
+    high: "2h"
+    medium: "8h"
+    low: "24h"
+  
+  # 提醒机制
+  reminders:
+    enabled: true
+    intervals: ["50%", "80%", "100%"]
+    escalation: true
+  
+  # 复核机制
+  review:
+    enabled: true
+    sampling_rate: 0.10
+    reviewer: "team_lead"
+    
+  # 结果合并
+  result_merge:
+    strategy: "manual_overrides_auto"
+    preserve_evidence: true
+    audit_trail: true
+
+# ==================== 异常情况处理机制 ====================
+exceptions:
+  name: "异常情况处理"
+  description: "定义各类异常情况的处理策略"
+  
+  handlers:
+    # 异常1: 系统错误
+    - type: "SYSTEM_ERROR"
+      name: "系统错误"
+      description: "核实过程中发生系统级错误"
+      action: "retry"
+      max_retries: 3
+      retry_interval: 60
+      fallback_action: "manual_review"
+      notification: true
+      
+    # 异常2: 数据源不可用
+    - type: "DATA_SOURCE_UNAVAILABLE"
+      name: "数据源不可用"
+      description: "关键数据源无法访问"
+      action: "degrade_gracefully"
+      alternative_sources: true
+      fallback_action: "manual_review"
+      notification: true
+      
+    # 异常3: 超时
+    - type: "TIMEOUT"
+      name: "处理超时"
+      description: "核实处理超过最大时限"
+      action: "terminate"
+      fallback_action: "manual_review"
+      preserve_partial_results: true
+      notification: true
+      
+    # 异常4: 数据格式错误
+    - type: "DATA_FORMAT_ERROR"
+      name: "数据格式错误"
+      description: "输入或输出数据格式异常"
+      action: "reject"
+      log_error: true
+      notification: false
+      
+    # 异常5: 规则执行错误
+    - type: "RULE_EXECUTION_ERROR"
+      name: "规则执行错误"
+      description: "核实规则执行失败"
+      action: "skip_rule"
+      fallback_action: "manual_review"
+      log_error: true
+      notification: true
+      
+    # 异常6: 内存/资源不足
+    - type: "RESOURCE_EXHAUSTED"
+      name: "资源不足"
+      description: "系统资源不足"
+      action: "throttle"
+      fallback_action: "queue"
+      notification: true
+      
+    # 异常7: 外部服务错误
+    - type: "EXTERNAL_SERVICE_ERROR"
+      name: "外部服务错误"
+      description: "依赖的外部服务返回错误"
+      action: "retry"
+      max_retries: 3
+      fallback_action: "manual_review"
+      notification: true
+  
+  # 全局异常处理
+  global:
+    catch_all: true
+    default_action: "manual_review"
+    emergency_contact: "ops_team"
+    log_all_exceptions: true
+
+# ==================== 降级记录与审计 ====================
+audit:
+  name: "降级审计"
+  description: "降级处理的记录和审计配置"
+  
+  # 记录内容
+  record_fields:
+    - poi_id
+    - poi_name
+    - poi_type
+    - downgrade_reason
+    - trigger_conditions
+    - confidence_scores
+    - evidence_summary
+    - timestamp
+    - auto_verification_result
+    - manual_verification_result
+    - verifier_id
+    - verification_duration
+  
+  # 审计日志
+  logging:
+    enabled: true
+    level: "INFO"
+    storage: "database"
+    retention_days: 1095  # 3年
+  
+  # 报告生成
+  reporting:
+    enabled: true
+    daily_summary: true
+    weekly_report: true
+    monthly_analysis: true
+    metrics:
+      - downgrade_rate
+      - manual_review_completion_rate
+      - accuracy_improvement
+      - average_resolution_time
+      - false_positive_rate
+
+# ==================== 降级策略优化 ====================
+optimization:
+  name: "降级策略优化"
+  description: "基于历史数据持续优化降级策略"
+  
+  # 阈值动态调整
+  adaptive_thresholds:
+    enabled: true
+    learning_rate: 0.01
+    min_samples: 100
+    adjustment_interval: 7  # 天
+  
+  # 规则优化
+  rule_optimization:
+    enabled: true
+    review_misclassified: true
+    update_frequency: "monthly"
+  
+  # A/B测试
+  ab_testing:
+    enabled: false
+    test_groups: ["control", "variant_a", "variant_b"]
+    test_duration: 30  # 天
