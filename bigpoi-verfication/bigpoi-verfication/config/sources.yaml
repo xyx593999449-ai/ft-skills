@@ -1,5 +1,5 @@
 # POI核实资料源配置文件
-# 版本: 1.0
+# 版本: 1.0.2
 # 说明: 本文件配置了大POI核实所需的多源情报来源，按POI类型分类组织
 # 权重范围: 0.0-1.0，1.0为最高可信度
 
@@ -21,8 +21,7 @@ credentials:
   amap:
     - ak: "9f2fee2d08448231243efb26476e3625"
       referer: "" # 如果绑定了 Referer，请填写具体域名，否则为空
-    #- ak: "YOUR_AMAP_API_KEY_2"
-      referer: "https://example.com"
+
   bmap:
     - ak: "2xBld7istSKnGGcNmGrHgQUO1TjuM2Cm"
       referer: "https://xnova.com/"
@@ -41,8 +40,7 @@ credentials:
   qmap:
     - key: "MGVBZ-MTTKW-LB3RI-O5YDH-5QNVO-CVFNC"
       referer: "https://www.hangfw.com/"
-    - key: "YOUR_QMAP_API_KEY_2"
-      referer: ""
+
 
 # POI类型分类及对应情报源
 poi_categories:

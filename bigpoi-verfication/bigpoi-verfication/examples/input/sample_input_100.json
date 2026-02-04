@@ -1,0 +1,1080 @@
+[
+  {
+    "poi_id": "HOSP_BJ_0001",
+    "name": "北京大学第一医院",
+    "poi_type": "hospital",
+    "city": "北京市",
+    "address": "北京市西城区西什库大街8号",
+    "coordinates": {
+      "longitude": 116.3723,
+      "latitude": 39.9342,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-83572211",
+    "postcode": "100034"
+  },
+  {
+    "poi_id": "HOSP_BJ_0002",
+    "name": "北京协和医院",
+    "poi_type": "hospital",
+    "city": "北京市",
+    "address": "北京市东城区王府井大街1号",
+    "coordinates": {
+      "longitude": 116.4057,
+      "latitude": 39.9175,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-65295239",
+    "postcode": "100730"
+  },
+  {
+    "poi_id": "HOSP_SH_0001",
+    "name": "复旦大学附属中山医院",
+    "poi_type": "hospital",
+    "city": "上海市",
+    "address": "上海市徐汇区斜土路1609号",
+    "coordinates": {
+      "longitude": 121.4457,
+      "latitude": 31.1917,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "021-64041990",
+    "postcode": "200032"
+  },
+  {
+    "poi_id": "HOSP_GZ_0001",
+    "name": "广州市第一人民医院",
+    "poi_type": "hospital",
+    "city": "广州市",
+    "address": "广州市越秀区党校前街1号",
+    "coordinates": {
+      "longitude": 113.2759,
+      "latitude": 23.1291,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "020-81048888",
+    "postcode": "510080"
+  },
+  {
+    "poi_id": "HOSP_SZ_0001",
+    "name": "深圳市人民医院",
+    "poi_type": "hospital",
+    "city": "深圳市",
+    "address": "深圳市罗湖区东门北路1017号",
+    "coordinates": {
+      "longitude": 114.1317,
+      "latitude": 22.5463,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0755-25533018",
+    "postcode": "518020"
+  },
+  {
+    "poi_id": "GOVT_BJ_0001",
+    "name": "北京市人民政府",
+    "poi_type": "government",
+    "city": "北京市",
+    "address": "北京市东城区宣武门内大街45号",
+    "coordinates": {
+      "longitude": 116.3974,
+      "latitude": 39.8915,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_SH_0001",
+    "name": "上海市人民政府",
+    "poi_type": "government",
+    "city": "上海市",
+    "address": "上海市黄浦区人民大道200号",
+    "coordinates": {
+      "longitude": 121.4895,
+      "latitude": 31.2304,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_GZ_0001",
+    "name": "广州市人民政府",
+    "poi_type": "government",
+    "city": "广州市",
+    "address": "广州市越秀区越华路115号",
+    "coordinates": {
+      "longitude": 113.2644,
+      "latitude": 23.1291,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_CQ_0001",
+    "name": "重庆市人民政府",
+    "poi_type": "government",
+    "city": "重庆市",
+    "address": "重庆市渝中区人民路1号",
+    "coordinates": {
+      "longitude": 106.5516,
+      "latitude": 29.5630,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_CD_0001",
+    "name": "成都市人民政府",
+    "poi_type": "government",
+    "city": "成都市",
+    "address": "成都市武侯区一环路西一段109号",
+    "coordinates": {
+      "longitude": 104.0659,
+      "latitude": 30.5728,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_BJ_0001",
+    "name": "北京市公安局",
+    "poi_type": "police",
+    "city": "北京市",
+    "address": "北京市西城区骡马市大街1号",
+    "coordinates": {
+      "longitude": 116.3769,
+      "latitude": 39.9054,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-86237474"
+  },
+  {
+    "poi_id": "POLI_SH_0001",
+    "name": "上海市公安局",
+    "poi_type": "police",
+    "city": "上海市",
+    "address": "上海市静安区恒丰路658号",
+    "coordinates": {
+      "longitude": 121.4450,
+      "latitude": 31.2533,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_GZ_0001",
+    "name": "广州市公安局",
+    "poi_type": "police",
+    "city": "广州市",
+    "address": "广州市越秀区越华路112号",
+    "coordinates": {
+      "longitude": 113.2644,
+      "latitude": 23.1291,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_XA_0001",
+    "name": "西安市公安局",
+    "poi_type": "police",
+    "city": "西安市",
+    "address": "西安市莲湖区北关正街187号",
+    "coordinates": {
+      "longitude": 108.9398,
+      "latitude": 34.3416,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_WH_0001",
+    "name": "武汉市公安局",
+    "poi_type": "police",
+    "city": "武汉市",
+    "address": "武汉市汉口区中山大道1号",
+    "coordinates": {
+      "longitude": 114.3055,
+      "latitude": 30.5928,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_BJ_0001",
+    "name": "北京市高级人民法院",
+    "poi_type": "court",
+    "city": "北京市",
+    "address": "北京市东城区朝阳门内大街96号",
+    "coordinates": {
+      "longitude": 116.4200,
+      "latitude": 39.9109,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-84036000"
+  },
+  {
+    "poi_id": "COURT_SH_0001",
+    "name": "上海市高级人民法院",
+    "poi_type": "court",
+    "city": "上海市",
+    "address": "上海市浦东新区世纪大道1600号",
+    "coordinates": {
+      "longitude": 121.4950,
+      "latitude": 31.2387,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_GZ_0001",
+    "name": "广州市中级人民法院",
+    "poi_type": "court",
+    "city": "广州市",
+    "address": "广州市越秀区中山六路87号",
+    "coordinates": {
+      "longitude": 113.2566,
+      "latitude": 23.1291,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_SZ_0001",
+    "name": "深圳市中级人民法院",
+    "poi_type": "court",
+    "city": "深圳市",
+    "address": "深圳市福田区莲花山脚庆云路888号",
+    "coordinates": {
+      "longitude": 114.0895,
+      "latitude": 22.5417,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_NJ_0001",
+    "name": "南京市中级人民法院",
+    "poi_type": "court",
+    "city": "南京市",
+    "address": "南京市秦淮区建邺路228号",
+    "coordinates": {
+      "longitude": 118.7969,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "PROC_BJ_0001",
+    "name": "北京市人民检察院",
+    "poi_type": "procuratorate",
+    "city": "北京市",
+    "address": "北京市西城区长椿街8号",
+    "coordinates": {
+      "longitude": 116.3621,
+      "latitude": 39.9247,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-66253380"
+  },
+  {
+    "poi_id": "PROC_SH_0001",
+    "name": "上海市人民检察院",
+    "poi_type": "procuratorate",
+    "city": "上海市",
+    "address": "上海市静安区昌平路600号",
+    "coordinates": {
+      "longitude": 121.4524,
+      "latitude": 31.2596,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "PROC_GZ_0001",
+    "name": "广州市人民检察院",
+    "poi_type": "procuratorate",
+    "city": "广州市",
+    "address": "广州市越秀区沿江中路181号",
+    "coordinates": {
+      "longitude": 113.2527,
+      "latitude": 23.1291,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "SCE_BJ_0001",
+    "name": "故宫博物院5A景区",
+    "poi_type": "scenic",
+    "city": "北京市",
+    "address": "北京市东城区景山前街4号",
+    "coordinates": {
+      "longitude": 116.3972,
+      "latitude": 39.9238,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-85007421",
+    "postcode": "100009"
+  },
+  {
+    "poi_id": "SCE_BJ_0002",
+    "name": "天坛公园5A景区",
+    "poi_type": "scenic",
+    "city": "北京市",
+    "address": "北京市东城区天坛路1号",
+    "coordinates": {
+      "longitude": 116.4131,
+      "latitude": 39.8826,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "SCE_HZ_0001",
+    "name": "西湖5A景区",
+    "poi_type": "scenic",
+    "city": "杭州市",
+    "address": "杭州市西湖区龙井路1号",
+    "coordinates": {
+      "longitude": 120.1551,
+      "latitude": 30.2741,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0571-87067999"
+  },
+  {
+    "poi_id": "SCE_GZ_0001",
+    "name": "广州白云山5A景区",
+    "poi_type": "scenic",
+    "city": "广州市",
+    "address": "广州市白云区广州大道北1961号",
+    "coordinates": {
+      "longitude": 113.2819,
+      "latitude": 23.1617,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_BJ_0001",
+    "name": "中国国家博物馆",
+    "poi_type": "museum",
+    "city": "北京市",
+    "address": "北京市东城区天安门广场东侧1号",
+    "coordinates": {
+      "longitude": 116.4074,
+      "latitude": 39.9042,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-65128901"
+  },
+  {
+    "poi_id": "MUS_SH_0001",
+    "name": "上海博物馆",
+    "poi_type": "museum",
+    "city": "上海市",
+    "address": "上海市黄浦区人民大道201号",
+    "coordinates": {
+      "longitude": 121.4895,
+      "latitude": 31.2304,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "021-63723500"
+  },
+  {
+    "poi_id": "MUS_GZ_0001",
+    "name": "广州博物馆",
+    "poi_type": "museum",
+    "city": "广州市",
+    "address": "广州市越秀区中山五路93号",
+    "coordinates": {
+      "longitude": 113.2566,
+      "latitude": 23.1320,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_NJ_0001",
+    "name": "南京博物院",
+    "poi_type": "museum",
+    "city": "南京市",
+    "address": "南京市玄武区中山东路321号",
+    "coordinates": {
+      "longitude": 118.8069,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_CD_0001",
+    "name": "四川博物院",
+    "poi_type": "museum",
+    "city": "成都市",
+    "address": "成都市浦江县浦江镇浦江街159号",
+    "coordinates": {
+      "longitude": 104.0659,
+      "latitude": 30.5728,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_BJ_0001",
+    "name": "北京大学",
+    "poi_type": "university",
+    "city": "北京市",
+    "address": "北京市海淀区颐和园路5号",
+    "coordinates": {
+      "longitude": 116.3071,
+      "latitude": 39.9993,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-62751131"
+  },
+  {
+    "poi_id": "UNIV_BJ_0002",
+    "name": "清华大学",
+    "poi_type": "university",
+    "city": "北京市",
+    "address": "北京市海淀区清华园1号",
+    "coordinates": {
+      "longitude": 116.3270,
+      "latitude": 40.0084,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-62793001"
+  },
+  {
+    "poi_id": "UNIV_SH_0001",
+    "name": "复旦大学",
+    "poi_type": "university",
+    "city": "上海市",
+    "address": "上海市杨浦区邯郸路220号",
+    "coordinates": {
+      "longitude": 121.4947,
+      "latitude": 31.2934,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "021-65642222"
+  },
+  {
+    "poi_id": "UNIV_HZ_0001",
+    "name": "浙江大学",
+    "poi_type": "university",
+    "city": "杭州市",
+    "address": "杭州市西湖区西溪路1号",
+    "coordinates": {
+      "longitude": 120.1551,
+      "latitude": 30.2741,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0571-87951234"
+  },
+  {
+    "poi_id": "UNIV_NJ_0001",
+    "name": "南京大学",
+    "poi_type": "university",
+    "city": "南京市",
+    "address": "南京市鼓楼区汉口路22号",
+    "coordinates": {
+      "longitude": 118.7969,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_WH_0001",
+    "name": "武汉大学",
+    "poi_type": "university",
+    "city": "武汉市",
+    "address": "武汉市武昌区珞珈山路16号",
+    "coordinates": {
+      "longitude": 114.3634,
+      "latitude": 30.5457,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "AIRP_BJ_0001",
+    "name": "北京首都国际机场",
+    "poi_type": "airport",
+    "city": "北京市",
+    "address": "北京市朝阳区机场街1号",
+    "coordinates": {
+      "longitude": 116.5857,
+      "latitude": 40.0797,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-96158"
+  },
+  {
+    "poi_id": "AIRP_BJ_0002",
+    "name": "北京大兴国际机场",
+    "poi_type": "airport",
+    "city": "北京市",
+    "address": "北京市大兴区榆垡镇北京大兴国际机场",
+    "coordinates": {
+      "longitude": 116.4074,
+      "latitude": 39.5098,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-96158"
+  },
+  {
+    "poi_id": "AIRP_SH_0001",
+    "name": "上海浦东国际机场",
+    "poi_type": "airport",
+    "city": "上海市",
+    "address": "上海市浦东新区迎宾大道1号",
+    "coordinates": {
+      "longitude": 121.8053,
+      "latitude": 31.1434,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "021-96990"
+  },
+  {
+    "poi_id": "AIRP_GZ_0001",
+    "name": "广州白云国际机场",
+    "poi_type": "airport",
+    "city": "广州市",
+    "address": "广州市白云区机场路1号",
+    "coordinates": {
+      "longitude": 113.2947,
+      "latitude": 23.3933,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "020-96158"
+  },
+  {
+    "poi_id": "AIRP_SZ_0001",
+    "name": "深圳宝安国际机场",
+    "poi_type": "airport",
+    "city": "深圳市",
+    "address": "深圳市宝安区机场路1号",
+    "coordinates": {
+      "longitude": 113.8847,
+      "latitude": 22.6431,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0755-96158"
+  },
+  {
+    "poi_id": "RAIL_BJ_0001",
+    "name": "北京西站",
+    "poi_type": "railway_station",
+    "city": "北京市",
+    "address": "北京市丰台区七里庄南四街2号",
+    "coordinates": {
+      "longitude": 116.2797,
+      "latitude": 39.8942,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-51885555"
+  },
+  {
+    "poi_id": "RAIL_BJ_0002",
+    "name": "北京火车站",
+    "poi_type": "railway_station",
+    "city": "北京市",
+    "address": "北京市东城区毛家湾胡同甲13号",
+    "coordinates": {
+      "longitude": 116.4308,
+      "latitude": 39.9045,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "010-51883000"
+  },
+  {
+    "poi_id": "RAIL_SH_0001",
+    "name": "上海虹桥站",
+    "poi_type": "railway_station",
+    "city": "上海市",
+    "address": "上海市闵行区虹中路2500号",
+    "coordinates": {
+      "longitude": 121.3231,
+      "latitude": 31.1852,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "021-96008008"
+  },
+  {
+    "poi_id": "RAIL_GZ_0001",
+    "name": "广州南站",
+    "poi_type": "railway_station",
+    "city": "广州市",
+    "address": "广州市番禺区石壁街道新城东路80号",
+    "coordinates": {
+      "longitude": 113.2553,
+      "latitude": 22.9967,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "020-39968888"
+  },
+  {
+    "poi_id": "RAIL_SZ_0001",
+    "name": "深圳站",
+    "poi_type": "railway_station",
+    "city": "深圳市",
+    "address": "深圳市罗湖区人民南路2108号",
+    "coordinates": {
+      "longitude": 114.1131,
+      "latitude": 22.5434,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0755-83946222"
+  },
+  {
+    "poi_id": "HOSP_HZ_0001",
+    "name": "浙江大学医学院附属第一医院",
+    "poi_type": "hospital",
+    "city": "杭州市",
+    "address": "杭州市上城区庆春路79号",
+    "coordinates": {
+      "longitude": 120.1668,
+      "latitude": 30.2552,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0571-87236114"
+  },
+  {
+    "poi_id": "HOSP_NJ_0001",
+    "name": "南京市鼓楼医院",
+    "poi_type": "hospital",
+    "city": "南京市",
+    "address": "南京市鼓楼区中山路321号",
+    "coordinates": {
+      "longitude": 118.7969,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "025-83304616"
+  },
+  {
+    "poi_id": "HOSP_WH_0001",
+    "name": "武汉市第三医院",
+    "poi_type": "hospital",
+    "city": "武汉市",
+    "address": "武汉市硚口区中山大道6号",
+    "coordinates": {
+      "longitude": 114.2683,
+      "latitude": 30.6122,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "027-85622700"
+  },
+  {
+    "poi_id": "HOSP_XA_0001",
+    "name": "西安市第四医院",
+    "poi_type": "hospital",
+    "city": "西安市",
+    "address": "西安市新城区太华北路15号",
+    "coordinates": {
+      "longitude": 109.0173,
+      "latitude": 34.3688,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "029-82667537"
+  },
+  {
+    "poi_id": "GOVT_HZ_0001",
+    "name": "杭州市人民政府",
+    "poi_type": "government",
+    "city": "杭州市",
+    "address": "杭州市下城区中河中路1号",
+    "coordinates": {
+      "longitude": 120.1668,
+      "latitude": 30.2552,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_NJ_0001",
+    "name": "南京市人民政府",
+    "poi_type": "government",
+    "city": "南京市",
+    "address": "南京市建邺区中山路2号",
+    "coordinates": {
+      "longitude": 118.7969,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_WH_0001",
+    "name": "武汉市人民政府",
+    "poi_type": "government",
+    "city": "武汉市",
+    "address": "武汉市武昌区中山路1号",
+    "coordinates": {
+      "longitude": 114.3055,
+      "latitude": 30.5928,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_XA_0001",
+    "name": "西安市人民政府",
+    "poi_type": "government",
+    "city": "西安市",
+    "address": "西安市新城区府城大街1号",
+    "coordinates": {
+      "longitude": 108.9398,
+      "latitude": 34.3416,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_HZ_0001",
+    "name": "杭州市公安局",
+    "poi_type": "police",
+    "city": "杭州市",
+    "address": "杭州市上城区保俶北路99号",
+    "coordinates": {
+      "longitude": 120.1668,
+      "latitude": 30.2552,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "POLI_NJ_0001",
+    "name": "南京市公安局",
+    "poi_type": "police",
+    "city": "南京市",
+    "address": "南京市建邺区中山路1号",
+    "coordinates": {
+      "longitude": 118.7969,
+      "latitude": 32.0603,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_HZ_0001",
+    "name": "杭州市中级人民法院",
+    "poi_type": "court",
+    "city": "杭州市",
+    "address": "杭州市西湖区南浦大桥北1号",
+    "coordinates": {
+      "longitude": 120.1551,
+      "latitude": 30.2741,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_WH_0001",
+    "name": "武汉市中级人民法院",
+    "poi_type": "court",
+    "city": "武汉市",
+    "address": "武汉市武昌区立教街1号",
+    "coordinates": {
+      "longitude": 114.3055,
+      "latitude": 30.5928,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "PROC_HZ_0001",
+    "name": "杭州市人民检察院",
+    "poi_type": "procuratorate",
+    "city": "杭州市",
+    "address": "杭州市西湖区体育场路1号",
+    "coordinates": {
+      "longitude": 120.1551,
+      "latitude": 30.2741,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "PROC_WH_0001",
+    "name": "武汉市人民检察院",
+    "poi_type": "procuratorate",
+    "city": "武汉市",
+    "address": "武汉市武昌区中山路1号",
+    "coordinates": {
+      "longitude": 114.3055,
+      "latitude": 30.5928,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "SCE_HZ_0002",
+    "name": "龙井茶园景区",
+    "poi_type": "scenic",
+    "city": "杭州市",
+    "address": "杭州市西湖区龙井路龙井茶园",
+    "coordinates": {
+      "longitude": 120.1551,
+      "latitude": 30.2741,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "SCE_SZ_0001",
+    "name": "深圳锦绣中华景区",
+    "poi_type": "scenic",
+    "city": "深圳市",
+    "address": "深圳市南山区华侨城1号",
+    "coordinates": {
+      "longitude": 114.0579,
+      "latitude": 22.5431,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_WH_0001",
+    "name": "武汉博物馆",
+    "poi_type": "museum",
+    "city": "武汉市",
+    "address": "武汉市汉口区博物馆路1号",
+    "coordinates": {
+      "longitude": 114.3055,
+      "latitude": 30.5928,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_XA_0001",
+    "name": "陕西历史博物馆",
+    "poi_type": "museum",
+    "city": "西安市",
+    "address": "西安市雁塔区翠华路2299号",
+    "coordinates": {
+      "longitude": 108.9398,
+      "latitude": 34.3416,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_CS_0001",
+    "name": "长沙理工大学",
+    "poi_type": "university",
+    "city": "长沙市",
+    "address": "长沙市雨花区万家丽南路2段960号",
+    "coordinates": {
+      "longitude": 113.0354,
+      "latitude": 28.1709,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_XA_0001",
+    "name": "西安交通大学",
+    "poi_type": "university",
+    "city": "西安市",
+    "address": "西安市碑林区咸宁西路28号",
+    "coordinates": {
+      "longitude": 108.9398,
+      "latitude": 34.3416,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "AIRP_HZ_0001",
+    "name": "杭州萧山国际机场",
+    "poi_type": "airport",
+    "city": "杭州市",
+    "address": "杭州市萧山区跨湖路6号",
+    "coordinates": {
+      "longitude": 120.2566,
+      "latitude": 30.2296,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0571-96358"
+  },
+  {
+    "poi_id": "AIRP_WH_0001",
+    "name": "武汉天河国际机场",
+    "poi_type": "airport",
+    "city": "武汉市",
+    "address": "武汉市江汉区泛海国际SOHO2栋C座",
+    "coordinates": {
+      "longitude": 114.2095,
+      "latitude": 30.7857,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "027-96567"
+  },
+  {
+    "poi_id": "AIRP_XA_0001",
+    "name": "西安咸阳国际机场",
+    "poi_type": "airport",
+    "city": "西安市",
+    "address": "西安市咸阳市机场路1号",
+    "coordinates": {
+      "longitude": 108.7519,
+      "latitude": 34.4469,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "029-96668"
+  },
+  {
+    "poi_id": "RAIL_HZ_0001",
+    "name": "杭州火车东站",
+    "poi_type": "railway_station",
+    "city": "杭州市",
+    "address": "杭州市下城区环城东路1号",
+    "coordinates": {
+      "longitude": 120.1935,
+      "latitude": 30.2596,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0571-88886666"
+  },
+  {
+    "poi_id": "RAIL_WH_0001",
+    "name": "武汉火车站",
+    "poi_type": "railway_station",
+    "city": "武汉市",
+    "address": "武汉市汉口区发展大道301号",
+    "coordinates": {
+      "longitude": 114.2898,
+      "latitude": 30.6123,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "027-82860000"
+  },
+  {
+    "poi_id": "RAIL_XA_0001",
+    "name": "西安火车站",
+    "poi_type": "railway_station",
+    "city": "西安市",
+    "address": "西安市新城区解放路1号",
+    "coordinates": {
+      "longitude": 109.0173,
+      "latitude": 34.3688,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "029-87081114"
+  },
+  {
+    "poi_id": "HOSP_CS_0001",
+    "name": "湘雅医院",
+    "poi_type": "hospital",
+    "city": "长沙市",
+    "address": "长沙市开福区湘雅路87号",
+    "coordinates": {
+      "longitude": 113.0354,
+      "latitude": 28.1709,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0731-84328888"
+  },
+  {
+    "poi_id": "HOSP_TJ_0001",
+    "name": "天津医学高等专科学校附属医院",
+    "poi_type": "hospital",
+    "city": "天津市",
+    "address": "天津市河北区宜白路40号",
+    "coordinates": {
+      "longitude": 117.1959,
+      "latitude": 39.1330,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_CS_0001",
+    "name": "长沙市人民政府",
+    "poi_type": "government",
+    "city": "长沙市",
+    "address": "长沙市天心区政府路1号",
+    "coordinates": {
+      "longitude": 113.0354,
+      "latitude": 28.1709,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "GOVT_TJ_0001",
+    "name": "天津市人民政府",
+    "poi_type": "government",
+    "city": "天津市",
+    "address": "天津市河东区十一经路62号",
+    "coordinates": {
+      "longitude": 117.1959,
+      "latitude": 39.1330,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "COURT_CS_0001",
+    "name": "长沙市中级人民法院",
+    "poi_type": "court",
+    "city": "长沙市",
+    "address": "长沙市天心区湖南路1号",
+    "coordinates": {
+      "longitude": 113.0354,
+      "latitude": 28.1709,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_ZZ_0001",
+    "name": "郑州大学",
+    "poi_type": "university",
+    "city": "郑州市",
+    "address": "郑州市高新区科学大道100号",
+    "coordinates": {
+      "longitude": 113.6254,
+      "latitude": 34.7466,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "AIRP_ZZ_0001",
+    "name": "郑州新郑国际机场",
+    "poi_type": "airport",
+    "city": "郑州市",
+    "address": "郑州市新郑市人民路1号",
+    "coordinates": {
+      "longitude": 113.8202,
+      "latitude": 34.5247,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0371-96666"
+  },
+  {
+    "poi_id": "SCE_XA_0001",
+    "name": "兵马俑景区",
+    "poi_type": "scenic",
+    "city": "西安市",
+    "address": "西安市临潼区晓寨路",
+    "coordinates": {
+      "longitude": 109.2761,
+      "latitude": 34.3831,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "MUS_SZ_0001",
+    "name": "深圳博物馆",
+    "poi_type": "museum",
+    "city": "深圳市",
+    "address": "深圳市罗湖区文物路41号",
+    "coordinates": {
+      "longitude": 114.1317,
+      "latitude": 22.5463,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "UNIV_QD_0001",
+    "name": "山东大学",
+    "poi_type": "university",
+    "city": "青岛市",
+    "address": "青岛市香港东路23号",
+    "coordinates": {
+      "longitude": 120.5563,
+      "latitude": 36.0671,
+      "coordinate_system": "GCJ02"
+    }
+  },
+  {
+    "poi_id": "AIRP_QD_0001",
+    "name": "青岛流亭国际机场",
+    "poi_type": "airport",
+    "city": "青岛市",
+    "address": "青岛市城阳区机场路1号",
+    "coordinates": {
+      "longitude": 120.6231,
+      "latitude": 36.2654,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0532-96616"
+  },
+  {
+    "poi_id": "RAIL_QD_0001",
+    "name": "青岛火车站",
+    "poi_type": "railway_station",
+    "city": "青岛市",
+    "address": "青岛市市南区香港中路8号",
+    "coordinates": {
+      "longitude": 120.5563,
+      "latitude": 36.0671,
+      "coordinate_system": "GCJ02"
+    },
+    "phone": "0532-82931000"
+  }
+]

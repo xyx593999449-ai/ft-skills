@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-# Version: 1.0.0
+# Version: 1.0.2
 # Author: BigPOI Verification System
 # Date: 2024-01-15
 
