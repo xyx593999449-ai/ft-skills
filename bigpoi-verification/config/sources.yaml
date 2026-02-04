@@ -21,8 +21,7 @@ credentials:
   amap:
     - ak: "9f2fee2d08448231243efb26476e3625"
       referer: "" # 如果绑定了 Referer，请填写具体域名，否则为空
-    #- ak: "YOUR_AMAP_API_KEY_2"
-      referer: "https://example.com"
+
   bmap:
     - ak: "2xBld7istSKnGGcNmGrHgQUO1TjuM2Cm"
       referer: "https://xnova.com/"
@@ -41,8 +40,7 @@ credentials:
   qmap:
     - key: "MGVBZ-MTTKW-LB3RI-O5YDH-5QNVO-CVFNC"
       referer: "https://www.hangfw.com/"
-    - key: "YOUR_QMAP_API_KEY_2"
-      referer: ""
+
 
 # POI类型分类及对应情报源
 poi_categories:
