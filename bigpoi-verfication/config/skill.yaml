@@ -1,11 +1,11 @@
 # Big POI 核实技能配置文件
-# 版本: 1.0.2
+# 版本: 1.0.0
 # 说明: 本文件定义了大POI核实技能的基本属性和支持的POI类型
 
 # 技能基本信息
 skill:
   name: "bigpoi-verification"
-  version: "1.0.2"
+  version: "1.0.0"
   description: "自动化核实大POI数据（如三甲医院、政府机关、机场等）的真实性、名称、空间位置与分类准确性"
   author: "BigPOI Verification Team"
   created_at: "2024-01-15"
