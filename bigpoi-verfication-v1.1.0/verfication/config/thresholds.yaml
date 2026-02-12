@@ -1,0 +1,385 @@
+# POI核实阈值配置文件
+# 版本: 1.0
+# 说明: 本文件定义了大POI核实各维度的量化阈值标准
+# 所有阈值均为硬性标准，不得随意调整
+
+# 全局阈值配置
+global:
+  # 整体置信度阈值
+  overall_confidence:
+    # 高置信度 - 可直接采纳
+    high: 0.85
+    # 中等置信度 - 需人工复核
+    medium: 0.60
+    # 低置信度 - 必须降级处理
+    low: 0.60
+  
+  # 证据数量阈值
+  evidence_count:
+    # 最少证据数量（低于此数量必须降级）
+    minimum: 2
+    # 理想证据数量
+    ideal: 3
+    # 最大证据数量（超过不再收集）
+    maximum: 5
+  
+  # 坐标系统配置
+  coordinate_system:
+    # 标准输出坐标系
+    standard: "GCJ02"
+    # 支持的输入坐标系
+    supported: ["WGS84", "GCJ02", "BD09"]
+    # 坐标系说明
+    description: "本系统统一使用GCJ02（国测局坐标系）作为标准输出坐标系"
+
+# ==================== 维度一：存在性核实（Existence） ====================
+existence:
+  name: "存在性核实"
+  description: "验证POI实体是否真实存在"
+  
+  # 存在性判断阈值
+  existence_score:
+    # 确认存在 - 高可信来源明确证实
+    confirmed: 0.90
+    # 可能存在 - 有证据支持但不够充分
+    probable: 0.70
+    # 不确定 - 证据不足或存在冲突
+    uncertain: 0.50
+    # 可能不存在 - 有证据表明已撤销或不存在
+    unlikely: 0.30
+    # 确认不存在 - 官方明确公告撤销或从未存在
+    non_existent: 0.10
+  
+  # 变更状态检测
+  change_status:
+    # 正常运营
+    active: 1.0
+    # 已撤销/关闭
+    revoked: 0.0
+    # 已合并
+    merged: 0.3
+    # 已迁址
+    relocated: 0.4
+    # 更名
+    renamed: 0.7
+    # 装修中/暂停营业
+    suspended: 0.6
+  
+  # 证据时效性阈值（天数）
+  evidence_freshness:
+    # 最新证据（30天内）
+    fresh: 30
+    # 近期证据（90天内）
+    recent: 90
+    # 过期证据（超过365天）
+    stale: 365
+
+# ==================== 维度二：名称准确性核实（Name） ====================
+name:
+  name: "名称准确性核实"
+  description: "验证POI名称与官方或权威命名的一致性"
+  
+  # 名称相似度阈值（使用标准化后的字符串相似度）
+  similarity:
+    # 完全匹配（100%）
+    exact_match: 1.0
+    # 高度相似（允许微小差异，如标点、空格）
+    high_similarity: 0.95
+    # 中度相似（允许部分差异，如简称、别名）
+    medium_similarity: 0.85
+    # 低度相似（有明显差异但可能相关）
+    low_similarity: 0.70
+    # 不匹配（差异过大）
+    no_match: 0.70
+  
+  # 名称规范化阈值
+  normalization:
+    # 前缀处理
+    prefix:
+      # 必须保留的前缀（如"中国"、"国家"）
+      mandatory: ["中国", "国家", "中华", "全国"]
+      # 可选前缀（如"北京市"、"上海市"）
+      optional: ["北京", "上海", "广州", "深圳"]
+      # 应移除的前缀（如"原"、"老"）
+      removable: ["原", "老", "旧"]
+    
+    # 后缀处理
+    suffix:
+      # 必须保留的后缀（如"医院"、"大学"）
+      mandatory: ["医院", "大学", "学院", "机场", "火车站", "法院", "检察院", "政府"]
+      # 可选后缀（如"有限公司"、"股份有限公司"）
+      optional: ["有限公司", "股份有限公司", "有限责任公司"]
+      # 应移除的后缀（如"（已关闭）"、"[迁址]"）
+      removable: ["已关闭", "已撤销", "迁址", "装修中"]
+  
+  # 简称映射阈值
+  abbreviation:
+    # 标准简称匹配度
+    standard_match: 0.90
+    # 非标准简称匹配度
+    non_standard_match: 0.75
+
+# ==================== 维度三：空间位置核实（Location） ====================
+location:
+  name: "空间位置核实"
+  description: "验证POI坐标的合理性与准确性"
+  
+  # 距离偏差阈值（单位：米）
+  distance_threshold:
+    # 完全匹配（同一位置）
+    exact_match: 0
+    # 高精度匹配（< 10米，适用于建筑物级POI）
+    high_precision: 10
+    # 标准匹配（< 50米，适用于大多数POI）
+    standard: 50
+    # 宽松匹配（< 100米，适用于大型区域POI）
+    relaxed: 100
+    # 大范围匹配（< 500米，适用于景区、园区等）
+    wide_range: 500
+    # 不匹配（>= 500米）
+    mismatch: 500
+  
+  # 坐标有效性阈值
+  coordinate_validity:
+    # 经度范围（中国境内）
+    longitude:
+      min: 73.5
+      max: 135.1
+    # 纬度范围（中国境内）
+    latitude:
+      min: 3.5
+      max: 53.6
+    # 坐标精度（小数位数）
+    precision: 6
+  
+  # 行政区匹配阈值
+  administrative_match:
+    # 完全在行政区内
+    within_boundary: 1.0
+    # 靠近边界（< 100米）
+    near_boundary: 0.9
+    # 跨边界（需要特殊处理）
+    cross_boundary: 0.5
+    # 在行政区外（明显错误）
+    outside_boundary: 0.0
+  
+  # 不同类型POI的距离阈值配置
+  poi_type_distance:
+    hospital: 50        # 医院：50米
+    government: 100     # 政府机关：100米
+    police: 50          # 公安：50米
+    court: 50           # 法院：50米
+    procuratorate: 50   # 检察院：50米
+    scenic: 500         # 景区：500米
+    museum: 50          # 博物馆：50米
+    university: 200     # 高校：200米
+    airport: 1000       # 机场：1000米
+    railway_station: 200 # 火车站：200米
+
+# ==================== 维度四：分类正确性核实（Category） ====================
+category:
+  name: "分类正确性核实"
+  description: "验证POI类型与实体属性是否匹配"
+  
+  # 分类匹配阈值
+  match_score:
+    # 完全匹配（类型完全一致）
+    exact_match: 1.0
+    # 高度匹配（类型相近，如"综合医院"与"三甲医院"）
+    high_match: 0.90
+    # 中度匹配（类型相关但不够精确）
+    medium_match: 0.75
+    # 低度匹配（类型可能相关）
+    low_match: 0.50
+    # 不匹配（类型明显错误）
+    no_match: 0.50
+  
+  # 分类层级阈值
+  hierarchy:
+    # 一级分类匹配（大类正确）
+    level_1: 0.80
+    # 二级分类匹配（中类正确）
+    level_2: 0.90
+    # 三级分类匹配（小类正确）
+    level_3: 0.95
+    # 四级分类匹配（细类正确）
+    level_4: 1.0
+  
+  # 关键词匹配阈值
+  keyword_match:
+    # 必须包含的关键词（如"医院"必须包含"医院"）
+    mandatory:
+      hospital: ["医院", "卫生院", "诊所"]
+      university: ["大学", "学院"]
+      airport: ["机场", "国际机场", "航站"]
+      railway_station: ["站", "火车站", "高铁站"]
+      government: ["政府", "办公厅", "局", "委", "办"]
+      court: ["法院", "法庭", "审判庭"]
+      procuratorate: ["检察院", "检察"]
+      scenic: ["景区", "风景区", "公园", "遗址"]
+      museum: ["博物馆", "纪念馆", "展览馆"]
+      police: ["公安", "警察", "派出所", "交警"]
+    
+    # 不应包含的关键词（如"医院"不应包含"学校"）
+    forbidden:
+      hospital: ["学校", "工厂", "商场"]
+      university: ["医院", "工厂", "监狱"]
+      airport: ["港口", "码头", "车站"]
+      railway_station: ["机场", "港口", "码头"]
+
+# ==================== 维度五：行政区匹配核实（Administrative Alignment） ====================
+administrative:
+  name: "行政区匹配核实"
+  description: "验证POI是否位于合理的行政区范围内"
+  
+  # 行政区级别匹配阈值
+  level_match:
+    # 国家级
+    national: 1.0
+    # 省级
+    provincial: 0.95
+    # 地市级
+    prefectural: 0.90
+    # 区县级
+    county: 0.85
+    # 乡镇级
+    township: 0.80
+  
+  # 地址与行政区一致性阈值
+  address_consistency:
+    # 完全匹配（地址中的行政区与实际一致）
+    exact_match: 1.0
+    # 部分匹配（地址中的部分行政区信息正确）
+    partial_match: 0.80
+    # 不匹配（地址中的行政区信息错误）
+    mismatch: 0.50
+  
+  # 邮编匹配阈值（如提供邮编）
+  postcode_match:
+    # 邮编与行政区完全匹配
+    exact_match: 1.0
+    # 邮编与行政区部分匹配（同一城市不同区县）
+    partial_match: 0.85
+    # 邮编与行政区不匹配
+    mismatch: 0.50
+
+# ==================== 维度六：时效性风险核实（Timeliness） ====================
+timeliness:
+  name: "时效性风险核实"
+  description: "评估POI数据的时效性和变更风险"
+  
+  # 数据年龄阈值（天数）
+  data_age:
+    # 最新数据（< 30天）
+    fresh: 30
+    # 近期数据（< 90天）
+    recent: 90
+    # 中期数据（< 180天）
+    moderate: 180
+    # 较旧数据（< 365天）
+    old: 365
+    # 过期数据（>= 365天）
+    expired: 365
+  
+  # 变更检测阈值
+  change_detection:
+    # 已确认变更（官方公告）
+    confirmed_change: 0.0
+    # 疑似变更（多源信息不一致）
+    suspected_change: 0.5
+    # 无变更迹象
+    no_change: 1.0
+  
+  # 信息更新频率阈值
+  update_frequency:
+    # 高频更新（每周）
+    high: 7
+    # 中频更新（每月）
+    medium: 30
+    # 低频更新（每季度）
+    low: 90
+    # 极低频更新（每年）
+    very_low: 365
+
+# ==================== 综合决策阈值 ====================
+decision:
+  name: "综合决策阈值"
+  description: "基于各维度结果的综合决策标准"
+  
+  # 维度权重配置（总和应为1.0）
+  dimension_weights:
+    existence: 0.25      # 存在性：25%
+    name: 0.25           # 名称：25%
+    location: 0.20       # 位置：20%
+    category: 0.15       # 分类：15%
+    administrative: 0.10 # 行政区：10%
+    timeliness: 0.05     # 时效性：5%
+  
+  # 决策阈值
+  thresholds:
+    # 自动采纳阈值（所有维度均达到此标准）
+    auto_accept:
+      min_confidence: 0.85
+      max_uncertain_dimensions: 0
+      required_dimensions: ["existence", "name", "location"]
+    
+    # 人工复核阈值
+    manual_review:
+      min_confidence: 0.60
+      max_uncertain_dimensions: 2
+    
+    # 强制降级阈值
+    downgrade:
+      min_confidence: 0.60
+      trigger_conditions:
+        - "existence == uncertain"
+        - "name_similarity < 0.70"
+        - "location_distance > 500"
+        - "evidence_count < 2"
+        - "high_conflict_in_sources"
+  
+  # 降级原因编码
+  downgrade_reasons:
+    INSUFFICIENT_EVIDENCE: "证据不足"
+    SOURCE_CONFLICT: "多源信息冲突"
+    LOW_CONFIDENCE: "置信度过低"
+    MISSING_MANDATORY_DIMENSION: "缺少必要维度"
+    OUTDATED_DATA: "数据过期"
+    SENSITIVE_DATA: "敏感数据需人工处理"
+    POLICY_CHANGE: "政策变更影响"
+    OTHER: "其他原因"
+
+# ==================== 特殊场景阈值 ====================
+special_cases:
+  name: "特殊场景处理"
+  description: "特殊类型POI或特殊场景的处理阈值"
+  
+  # 敏感数据阈值
+  sensitive_data:
+    # 涉密机构关键词
+    keywords: ["监狱", "看守所", "军队", "军事", "保密", "国安", "情报"]
+    # 处理方式：强制转人工
+    action: "manual_review"
+    # 优先级：最高
+    priority: 1
+  
+  # 历史建筑/遗址阈值
+  historical_site:
+    # 位置偏差容忍度（历史建筑可能涉及大范围）
+    location_tolerance: 1000
+    # 名称匹配容忍度（历史名称可能有变化）
+    name_tolerance: 0.75
+  
+  # 新建POI阈值
+  new_poi:
+    # 证据数量要求（新建POI证据可能较少）
+    min_evidence: 1
+    # 时效性权重提高
+    timeliness_weight: 0.15
+  
+  # 连锁品牌阈值
+  chain_brand:
+    # 名称匹配容忍度（允许分店编号差异）
+    name_tolerance: 0.80
+    # 位置偏差容忍度（连锁可能有多个分店）
+    location_tolerance: 200

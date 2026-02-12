@@ -1,0 +1,261 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ft-git.sf-express.com/ft-scaffold/ai-skills/schemas/evidence.schema.json",
+  "title": "POI核实证据数据模式",
+  "description": "定义大POI核实过程中收集的证据数据标准化格式",
+  "version": "1.1.0",
+  "type": "object",
+  "required": ["evidence_id", "poi_id", "source", "collected_at"],
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "description": "证据唯一标识符",
+      "minLength": 1,
+      "maxLength": 64,
+      "examples": ["EVD_202401150001_001"]
+    },
+    "poi_id": {
+      "type": "string",
+      "description": "关联的POI标识符",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "source": {
+      "type": "object",
+      "description": "证据来源信息",
+      "required": ["source_id", "source_name", "source_type"],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "description": "来源系统标识",
+          "minLength": 1,
+          "maxLength": 64,
+          "examples": ["NHC_001", "AMAP_POI"]
+        },
+        "source_name": {
+          "type": "string",
+          "description": "来源名称",
+          "minLength": 1,
+          "maxLength": 200,
+          "examples": ["国家卫生健康委员会", "高德地图"]
+        },
+        "source_type": {
+          "type": "string",
+          "description": "来源类型",
+          "enum": ["official", "map_vendor", "internet", "user_contributed", "other"],
+          "examples": ["official"]
+        },
+        "source_url": {
+          "type": "string",
+          "description": "来源URL",
+          "format": "uri",
+          "maxLength": 1000
+        },
+        "weight": {
+          "type": "number",
+          "description": "来源可信度权重",
+          "minimum": 0,
+          "maximum": 1,
+          "examples": [1.0, 0.85]
+        }
+      }
+    },
+    "collected_at": {
+      "type": "string",
+      "description": "证据收集时间",
+      "format": "date-time",
+      "examples": ["2024-01-15T08:35:00Z"]
+    },
+    "data": {
+      "type": "object",
+      "description": "证据数据内容",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "证据中的POI名称",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "address": {
+          "type": "string",
+          "description": "证据中的地址",
+          "maxLength": 500
+        },
+        "coordinates": {
+          "type": "object",
+          "description": "证据中的坐标",
+          "properties": {
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            }
+          },
+          "required": ["longitude", "latitude"]
+        },
+        "phone": {
+          "type": "string",
+          "description": "证据中的电话"
+        },
+        "category": {
+          "type": "string",
+          "description": "证据中的分类",
+          "maxLength": 100
+        },
+        "status": {
+          "type": "string",
+          "description": "POI状态",
+          "enum": ["active", "revoked", "merged", "relocated", "renamed", "suspended", "unknown"],
+          "examples": ["active"]
+        },
+        "level": {
+          "type": "string",
+          "description": "等级信息（如医院等级、景区等级）",
+          "maxLength": 50,
+          "examples": ["三级甲等", "5A"]
+        },
+        "administrative": {
+          "type": "object",
+          "description": "行政区划信息",
+          "properties": {
+            "province": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "city": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "district": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "street": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        },
+        "raw_data": {
+          "type": "object",
+          "description": "原始数据（保留完整响应）",
+          "additionalProperties": true
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "description": "证据验证信息",
+      "properties": {
+        "is_valid": {
+          "type": "boolean",
+          "description": "证据是否有效"
+        },
+        "validation_errors": {
+          "type": "array",
+          "description": "验证错误列表",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "description": "证据可信度",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "matching": {
+      "type": "object",
+      "description": "与输入POI的匹配信息",
+      "properties": {
+        "name_similarity": {
+          "type": "number",
+          "description": "名称相似度",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "location_distance": {
+          "type": "number",
+          "description": "位置距离（米）",
+          "minimum": 0
+        },
+        "category_match": {
+          "type": "number",
+          "description": "分类匹配度",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "is_match": {
+          "type": "boolean",
+          "description": "是否匹配"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "扩展元数据",
+      "properties": {
+        "collection_method": {
+          "type": "string",
+          "description": "收集方法",
+          "enum": ["api", "crawl", "manual", "import"]
+        },
+        "response_time_ms": {
+          "type": "integer",
+          "description": "响应时间（毫秒）",
+          "minimum": 0
+        },
+        "retry_count": {
+          "type": "integer",
+          "description": "重试次数",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "evidence_id": "EVD_202401150001_001",
+      "poi_id": "HOSPITAL_BJ_001",
+      "source": {
+        "source_id": "NHC_001",
+        "source_name": "国家卫生健康委员会",
+        "source_type": "official",
+        "source_url": "https://www.nhc.gov.cn/",
+        "weight": 1.0
+      },
+      "collected_at": "2024-01-15T08:35:00Z",
+      "data": {
+        "name": "北京大学第一医院",
+        "address": "北京市西城区西什库大街8号",
+        "coordinates": {
+          "longitude": 116.3723,
+          "latitude": 39.9342
+        },
+        "phone": "010-83572211",
+        "category": "综合医院",
+        "status": "active",
+        "level": "三级甲等"
+      },
+      "verification": {
+        "is_valid": true,
+        "confidence": 0.95
+      },
+      "matching": {
+        "name_similarity": 1.0,
+        "location_distance": 0,
+        "category_match": 1.0,
+        "is_match": true
+      }
+    }
+  ]
+}

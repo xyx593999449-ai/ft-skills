@@ -1,0 +1,52 @@
+# 支持的POI类型白名单
+# 大POI是指在地图产品、监管审图或用户核心使用场景中具有高度重要性和公共影响力的兴趣点
+supported_poi_types:
+  - type: "hospital"
+    name: "医疗机构"
+    description: "三甲医院等医疗机构"
+    enabled: true
+
+  - type: "government"
+    name: "政府机关"
+    description: "国家级/省级/地市级/区县级政府机关"
+    enabled: true
+
+  - type: "police"
+    name: "公安机关"
+    description: "公安部门、派出所等"
+    enabled: true
+
+  - type: "court"
+    name: "法院"
+    description: "各级人民法院"
+    enabled: true
+
+  - type: "procuratorate"
+    name: "检察院"
+    description: "各级人民检察院"
+    enabled: true
+
+  - type: "scenic"
+    name: "景区"
+    description: "4A/5A景区、世界遗产"
+    enabled: true
+
+  - type: "museum"
+    name: "博物馆"
+    description: "各类博物馆"
+    enabled: true
+
+  - type: "university"
+    name: "高等院校"
+    description: "大学、高等学校"
+    enabled: true
+
+  - type: "airport"
+    name: "机场"
+    description: "民用机场、国际机场"
+    enabled: true
+
+  - type: "railway_station"
+    name: "火车站"
+    description: "铁路车站、高铁站"
+    enabled: true

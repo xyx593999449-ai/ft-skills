@@ -1,0 +1,732 @@
+# POI核实资料源配置文件
+# 版本: 2.0
+# 说明: 本文件配置了大POI核实所需的多源情报来源
+#       结构: 全局配置 -> 共用图商 -> POI类型特定的官方渠道和专有源
+# 权重范围: 0.0-1.0，1.0为最高可信度
+
+# ============================================================================
+# 全局配置
+# ============================================================================
+global:
+  # 默认置信度阈值
+  confidence_threshold: 0.8
+  # 距离偏差阈值（米）
+  distance_threshold: 50
+  # 名称相似度阈值
+  name_similarity_threshold: 0.85
+  # 请求超时时间（秒）
+  request_timeout: 30
+  # 重试次数
+  retry_count: 3
+
+# ============================================================================
+# API Key 凭据资源池（支持多 Key 与 Referer 配置，由程序逻辑映射调用）
+# ============================================================================
+credentials:
+  amap:
+    - ak: "9f2fee2d08448231243efb26476e3625"
+      referer: "" # 如果绑定了 Referer，请填写具体域名，否则为空
+
+  bmap:
+    - ak: "2xBld7istSKnGGcNmGrHgQUO1TjuM2Cm"
+      referer: "https://xnova.com/"
+    - ak: "F394d2819a214c06d340783634ab1e36"
+      referer: "http://www.jiuguijiu000799.com/"
+    - ak: "cc20lYsz3cGWBVaIfzGYqCGBNzOZMsHX"
+      referer: "https://ditu.city8.com/"
+    - ak: "g1axqYWMnGnioP0gVcMmmW8WUPAF8m6p"
+      referer: ""
+    - ak: "rq04plvocQ1hVH8ENvSfXLIqosIEAHnP"
+      referer: ""
+    - ak: "k2SX2SmJqCl0u3352QFjZy7bqSawVwnL"
+      referer: ""
+    - ak: "XKMwWHpJhbXG6WmStnfy13ly09noAeRc"
+      referer: ""
+  qmap:
+    - key: "MGVBZ-MTTKW-LB3RI-O5YDH-5QNVO-CVFNC"
+      referer: "https://www.hangfw.com/"
+
+# ============================================================================
+# 图商部分 - 所有POI类型均需调用的共用地图API
+# ============================================================================
+# 说明: 这些数据源对所有POI类型都适用，统一管理，避免在每个POI类型中重复定义
+# 策略: 程序优先调用图商，获得基础位置和分类信息，然后再调用类型特定的官方渠道
+map_vendors:
+  # ========== 高德地图 ==========
+  amap:
+    name: "高德地图"
+    type: "map_vendor"
+    url: "https://www.amap.com/"
+    api_endpoint: "https://restapi.amap.com/v3/place/text"
+    api_key_ref: "amap"
+    weight: 0.85
+    description: "高德地图POI数据（适用所有类型）"
+    update_frequency: "周度"
+    priority: 1  # 优先调用顺序
+
+  # ========== 百度地图 ==========
+  bmap:
+    name: "百度地图"
+    type: "map_vendor"
+    url: "https://map.baidu.com/"
+    api_endpoint: "https://api.map.baidu.com/place/v2/search"
+    api_key_ref: "bmap"
+    weight: 0.85
+    description: "百度地图POI数据（适用所有类型）"
+    update_frequency: "周度"
+    priority: 2
+
+  # ========== 腾讯地图 ==========
+  qmap:
+    name: "腾讯地图"
+    type: "map_vendor"
+    url: "https://map.qq.com/"
+    api_endpoint: "https://apis.map.qq.com/ws/place/v1/search"
+    api_key_ref: "qmap"
+    weight: 0.8
+    description: "腾讯地图POI数据（适用所有类型）"
+    update_frequency: "周度"
+    priority: 3
+
+
+# ============================================================================
+# POI类型特定的官方渠道和专有数据源
+# ============================================================================
+# 说明: 每个POI类型仅包含其特有的官方渠道和互联网专有源
+#       图商部分在上面统一定义，所有类型都会调用
+
+poi_categories:
+  # ==================== 医疗机构 ====================
+  hospital:
+    name: "医疗机构"
+    description: "三甲医院等医疗机构"
+    call_map_vendors: true  # 调用图商部分
+    sources:
+      # 官方渠道 - 最高可信度
+      - name: "国家卫生健康委员会"
+        type: "official"
+        url: "https://www.nhc.gov.cn/"
+        api_endpoint: "https://www.nhc.gov.cn/wjw/syyy/list.shtml"
+        weight: 1.0
+        description: "国家卫健委官网，提供医院等级评审结果"
+        update_frequency: "季度"
+
+      - name: "国家药品监督管理局"
+        type: "official"
+        url: "https://www.nmpa.gov.cn/"
+        weight: 0.95
+        description: "提供医疗机构执业许可信息"
+        update_frequency: "月度"
+
+      - name: "各省卫生健康委员会"
+        type: "official"
+        url: "https://wsjkw.{province}.gov.cn/"
+        weight: 0.95
+        description: "省级卫健委，提供地方医院信息"
+        update_frequency: "月度"
+
+      - name: "国家医疗保障局"
+        type: "official"
+        url: "https://www.nhsa.gov.cn/"
+        weight: 0.9
+        description: "医保定点医院信息"
+        update_frequency: "月度"
+
+      # 互联网专有源
+      - name: "百度百科-医院"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.6
+        description: "百度百科医院词条"
+        update_frequency: "不定期"
+
+      - name: "好大夫在线"
+        type: "internet"
+        url: "https://www.haodf.com/"
+        weight: 0.55
+        description: "医疗信息平台"
+        update_frequency: "周度"
+
+      - name: "丁香园"
+        type: "internet"
+        url: "https://www.dxy.cn/"
+        weight: 0.5
+        description: "医疗行业信息平台"
+        update_frequency: "周度"
+
+      # 爬虫源
+      - name: "互联网爬虫-医院"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.55
+        description: "通过爬虫接口获取医院相关网页"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+      - name: "政府网站爬虫-医院"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.6
+        description: "从政府网站搜索医院信息"
+        update_frequency: "实时"
+        crawler_type: "search_web"
+        top_k: 15
+
+  # ==================== 政府机关 ====================
+  government:
+    name: "政府机关"
+    description: "国家级、省直辖市级、地市级、区县级政府机关"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "中国政府网"
+        type: "official"
+        url: "https://www.gov.cn/"
+        weight: 1.0
+        description: "国务院及各级政府门户网站"
+        update_frequency: "实时"
+
+      - name: "国家政务服务平台"
+        type: "official"
+        url: "https://www.gjzwfw.gov.cn/"
+        weight: 1.0
+        description: "全国一体化政务服务平台"
+        update_frequency: "实时"
+
+      - name: "民政部"
+        type: "official"
+        url: "https://www.mca.gov.cn/"
+        api_endpoint: "https://www.mca.gov.cn/n152/n165/n178/"
+        weight: 0.95
+        description: "行政区划和政府机关信息"
+        update_frequency: "年度"
+
+      - name: "国家公务员局"
+        type: "official"
+        url: "http://www.scs.gov.cn/"
+        weight: 0.9
+        description: "政府机构设置信息"
+        update_frequency: "年度"
+
+      - name: "各省人民政府"
+        type: "official"
+        url: "https://www.{province}.gov.cn/"
+        weight: 0.95
+        description: "省级政府门户网站"
+        update_frequency: "实时"
+
+      - name: "各地市人民政府"
+        type: "official"
+        url: "https://www.{city}.gov.cn/"
+        weight: 0.9
+        description: "地市级政府门户网站"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-政府机构"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.6
+        description: "政府机构百科词条"
+        update_frequency: "不定期"
+
+      - name: "维基百科-中国地方政府"
+        type: "internet"
+        url: "https://zh.wikipedia.org/"
+        weight: 0.55
+        description: "维基百科地方政府条目"
+        update_frequency: "不定期"
+
+      # 爬虫源
+      - name: "政府网站爬虫-政府机构"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.65
+        description: "从政府网站搜索机构信息"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 15
+
+  # ==================== 公安警察 ====================
+  police:
+    name: "公安警察"
+    description: "公安机关、派出所等"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "公安部"
+        type: "official"
+        url: "https://www.mps.gov.cn/"
+        weight: 1.0
+        description: "公安部官网"
+        update_frequency: "实时"
+
+      - name: "各省公安厅"
+        type: "official"
+        url: "https://gat.{province}.gov.cn/"
+        weight: 0.95
+        description: "省级公安厅官网"
+        update_frequency: "实时"
+
+      - name: "各地市公安局"
+        type: "official"
+        url: "https://gaj.{city}.gov.cn/"
+        weight: 0.9
+        description: "地市级公安局官网"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-公安"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.55
+        description: "公安机构百科词条"
+        update_frequency: "不定期"
+
+      # 爬虫源
+      - name: "政府网站爬虫-公安"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.6
+        description: "从政府网站搜索公安机构信息"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 法院 ====================
+  court:
+    name: "法院"
+    description: "各级人民法院"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "最高人民法院"
+        type: "official"
+        url: "https://www.court.gov.cn/"
+        weight: 1.0
+        description: "最高人民法院官网"
+        update_frequency: "实时"
+
+      - name: "各省高级人民法院"
+        type: "official"
+        url: "https://{province}fy.chinacourt.gov.cn/"
+        weight: 0.95
+        description: "省级高级人民法院"
+        update_frequency: "实时"
+
+      - name: "中国裁判文书网"
+        type: "official"
+        url: "https://wenshu.court.gov.cn/"
+        weight: 0.9
+        description: "法院信息及地址"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-法院"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.6
+        description: "法院百科词条"
+        update_frequency: "不定期"
+
+      # 爬虫源
+      - name: "政府网站爬虫-法院"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.65
+        description: "从政府网站搜索法院信息"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 检察院 ====================
+  procuratorate:
+    name: "检察院"
+    description: "各级人民检察院"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "最高人民检察院"
+        type: "official"
+        url: "https://www.spp.gov.cn/"
+        weight: 1.0
+        description: "最高人民检察院官网"
+        update_frequency: "实时"
+
+      - name: "各省人民检察院"
+        type: "official"
+        url: "https://www.{province}.jcy.gov.cn/"
+        weight: 0.95
+        description: "省级人民检察院"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-检察院"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.6
+        description: "检察院百科词条"
+        update_frequency: "不定期"
+
+      # 爬虫源
+      - name: "政府网站爬虫-检察院"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.65
+        description: "从政府网站搜索检察院信息"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 景区 ====================
+  scenic:
+    name: "景区"
+    description: "4A景区、5A景区、世界遗产等"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "文化和旅游部"
+        type: "official"
+        url: "https://www.mct.gov.cn/"
+        api_endpoint: "https://www.mct.gov.cn/zwgk/zcwj/zcjd/"
+        weight: 1.0
+        description: "A级景区评定结果"
+        update_frequency: "年度"
+
+      - name: "国家林业和草原局"
+        type: "official"
+        url: "https://www.forestry.gov.cn/"
+        weight: 0.95
+        description: "国家森林公园、自然保护区信息"
+        update_frequency: "年度"
+
+      - name: "国家文物局"
+        type: "official"
+        url: "https://www.ncha.gov.cn/"
+        weight: 0.95
+        description: "全国重点文物保护单位"
+        update_frequency: "年度"
+
+      - name: "UNESCO世界遗产中心"
+        type: "official"
+        url: "https://whc.unesco.org/"
+        weight: 1.0
+        description: "世界遗产官方名录"
+        update_frequency: "年度"
+
+      - name: "各省文化和旅游厅"
+        type: "official"
+        url: "https://wlt.{province}.gov.cn/"
+        weight: 0.9
+        description: "省级景区评定信息"
+        update_frequency: "季度"
+
+      # 互联网专有源
+      - name: "百度百科-景区"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.65
+        description: "景区百科词条"
+        update_frequency: "不定期"
+
+      - name: "马蜂窝"
+        type: "internet"
+        url: "https://www.mafengwo.cn/"
+        weight: 0.6
+        description: "旅游攻略平台"
+        update_frequency: "周度"
+
+      - name: "去哪儿网"
+        type: "internet"
+        url: "https://www.qunar.com/"
+        weight: 0.6
+        description: "旅游信息平台"
+        update_frequency: "周度"
+
+      # 爬虫源
+      - name: "互联网爬虫-景区"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.55
+        description: "通过爬虫接口获取景区相关网页"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 博物馆 ====================
+  museum:
+    name: "博物馆"
+    description: "各类博物馆"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "国家文物局-博物馆"
+        type: "official"
+        url: "https://www.ncha.gov.cn/"
+        weight: 1.0
+        description: "全国博物馆名录"
+        update_frequency: "年度"
+
+      - name: "中国博物馆协会"
+        type: "official"
+        url: "http://www.chinamuseum.org.cn/"
+        weight: 0.95
+        description: "博物馆等级评定信息"
+        update_frequency: "年度"
+
+      - name: "国家博物馆"
+        type: "official"
+        url: "https://www.chnmuseum.cn/"
+        weight: 0.95
+        description: "国家一级博物馆信息"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-博物馆"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.65
+        description: "博物馆百科词条"
+        update_frequency: "不定期"
+
+      - name: "豆瓣同城-博物馆"
+        type: "internet"
+        url: "https://www.douban.com/location/"
+        weight: 0.55
+        description: "博物馆活动信息"
+        update_frequency: "周度"
+
+      # 爬虫源
+      - name: "互联网爬虫-博物馆"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.55
+        description: "通过爬虫接口获取博物馆相关网页"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 高等院校 ====================
+  university:
+    name: "高等院校"
+    description: "普通高等学校、重点高校等"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "教育部"
+        type: "official"
+        url: "http://www.moe.gov.cn/"
+        api_endpoint: "http://www.moe.gov.cn/jyb_xxgk/s5743/s5744/"
+        weight: 1.0
+        description: "全国高等学校名单"
+        update_frequency: "年度"
+
+      - name: "教育部阳光高考平台"
+        type: "official"
+        url: "https://gaokao.chsi.com.cn/"
+        weight: 0.95
+        description: "高校基本信息"
+        update_frequency: "年度"
+
+      - name: "学位与研究生教育信息网"
+        type: "official"
+        url: "https://www.cdgdc.edu.cn/"
+        weight: 0.9
+        description: "高校学科信息"
+        update_frequency: "年度"
+
+      - name: "中国高等教育学生信息网"
+        type: "official"
+        url: "https://www.chsi.com.cn/"
+        weight: 0.9
+        description: "高校学籍信息"
+        update_frequency: "实时"
+
+      # 互联网专有源
+      - name: "百度百科-高校"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.7
+        description: "高校百科词条"
+        update_frequency: "不定期"
+
+      - name: "各高校官网"
+        type: "internet"
+        url: "https://www.{university}.edu.cn/"
+        weight: 0.75
+        description: "高校官方网站"
+        update_frequency: "实时"
+
+      # 爬虫源
+      - name: "教育网站爬虫-高校"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.65
+        description: "从教育类网站搜索高校信息"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 机场 ====================
+  airport:
+    name: "机场"
+    description: "民用机场、通用机场等"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "中国民用航空局"
+        type: "official"
+        url: "https://www.caac.gov.cn/"
+        weight: 1.0
+        description: "民用机场官方信息"
+        update_frequency: "季度"
+
+      - name: "民航局机场司"
+        type: "official"
+        url: "https://www.caac.gov.cn/XXGK/XXGK/"
+        weight: 0.95
+        description: "机场运营许可信息"
+        update_frequency: "季度"
+
+      - name: "中国民航机场协会"
+        type: "official"
+        url: "http://www.cahk.org.cn/"
+        weight: 0.9
+        description: "机场行业信息"
+        update_frequency: "月度"
+
+      # 互联网专有源
+      - name: "百度百科-机场"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.65
+        description: "机场百科词条"
+        update_frequency: "不定期"
+
+      - name: "民航资源网"
+        type: "internet"
+        url: "https://www.carnoc.com/"
+        weight: 0.6
+        description: "民航行业资讯"
+        update_frequency: "日度"
+
+      - name: "飞常准"
+        type: "internet"
+        url: "https://www.variflight.com/"
+        weight: 0.8
+        description: "航班及机场信息"
+        update_frequency: "实时"
+
+      - name: "航旅纵横"
+        type: "internet"
+        url: "https://www.umetrip.com/"
+        weight: 0.8
+        description: "航班及机场信息"
+        update_frequency: "实时"
+
+      # 爬虫源
+      - name: "互联网爬虫-机场"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.55
+        description: "通过爬虫接口获取机场相关网页"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+  # ==================== 火车站 ====================
+  railway_station:
+    name: "火车站"
+    description: "高铁站、普通火车站等"
+    call_map_vendors: true
+    sources:
+      # 官方渠道
+      - name: "中国国家铁路集团"
+        type: "official"
+        url: "https://www.china-railway.com.cn/"
+        weight: 1.0
+        description: "全国铁路车站信息"
+        update_frequency: "季度"
+
+      - name: "12306官网"
+        type: "official"
+        url: "https://www.12306.cn/"
+        weight: 1.0
+        description: "铁路客票系统，车站信息"
+        update_frequency: "实时"
+
+      - name: "中国铁路经济规划研究院"
+        type: "official"
+        url: "http://www.crecc.com.cn/"
+        weight: 0.9
+        description: "铁路规划及车站信息"
+        update_frequency: "季度"
+
+      # 互联网专有源
+      - name: "百度百科-火车站"
+        type: "internet"
+        url: "https://baike.baidu.com/"
+        weight: 0.65
+        description: "火车站百科词条"
+        update_frequency: "不定期"
+
+      - name: "高铁网"
+        type: "internet"
+        url: "https://www.gaotie.cn/"
+        weight: 0.6
+        description: "高铁及车站信息"
+        update_frequency: "周度"
+
+      # 爬虫源
+      - name: "互联网爬虫-火车站"
+        type: "web_crawler"
+        url: "http://10.82.122.209:9081"
+        weight: 0.55
+        description: "通过爬虫接口获取火车站相关网页"
+        update_frequency: "实时"
+        crawler_type: "both"
+        top_k: 10
+
+# ============================================================================
+# 数据源类型权重参考
+# ============================================================================
+source_type_weights:
+  official: 1.0      # 官方渠道
+  map_vendor: 0.85   # 权威图商
+  internet: 0.6      # 互联网抓取
+  web_crawler: 0.55  # 网络爬虫
+
+# ============================================================================
+# 更新频率映射（用于计算数据时效性）
+# ============================================================================
+update_frequency_map:
+  实时: 1.0
+  日度: 0.95
+  周度: 0.9
+  月度: 0.85
+  季度: 0.8
+  年度: 0.75
+  不定期: 0.6
+
+# ============================================================================
+# 使用说明
+# ============================================================================
+# 1. 图商部分(map_vendors)
+#    - 对所有POI类型均适用
+#    - 程序启动时统一加载
+#    - 每个POI类型会自动调用所有图商API获取基础数据
+#
+# 2. POI类型特定部分(poi_categories)
+#    - 每个POI类型包含:
+#      - call_map_vendors: 是否调用图商(true表示调用)
+#      - sources: 该类型特有的官方渠道和专有源
+#    - 官方渠道: 权重1.0（最可信）
+#    - 互联网源: 权重0.55-0.8
+#    - 爬虫源: 权重0.55-0.65
+#
+# 3. 程序调用顺序
+#    Step1: 加载图商部分(amap, bmap, qmap)
+#    Step2: 根据POI类型加载特定源
+#    Step3: 优先级: 官方 > 图商 > 互联网专有 > 爬虫
+#    Step4: 多源融合计算加权置信度

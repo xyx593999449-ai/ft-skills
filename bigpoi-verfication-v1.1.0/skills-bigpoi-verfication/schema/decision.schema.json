@@ -1,0 +1,389 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ft-git.sf-express.com/ft-scaffold/ai-skills/schemas/decision.schema.json",
+  "title": "POI核实决策结果模式",
+  "description": "定义大POI核实技能的决策结果标准化格式",
+  "version": "1.1.0",
+  "type": "object",
+  "required": ["decision_id", "poi_id", "overall", "dimensions", "created_at"],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "description": "决策唯一标识符",
+      "minLength": 1,
+      "maxLength": 64,
+      "examples": ["DEC_202401150001"]
+    },
+    "poi_id": {
+      "type": "string",
+      "description": "关联的POI标识符",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "overall": {
+      "type": "object",
+      "description": "整体决策结果",
+      "required": ["status", "confidence"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "核实状态",
+          "enum": ["accepted", "downgraded", "manual_review", "rejected"],
+          "examples": ["accepted"]
+        },
+        "confidence": {
+          "type": "number",
+          "description": "整体置信度",
+          "minimum": 0,
+          "maximum": 1,
+          "examples": [0.92]
+        },
+        "action": {
+          "type": "string",
+          "description": "建议处理动作",
+          "enum": ["adopt", "modify", "reject", "manual_review", "further_investigation"],
+          "examples": ["adopt"]
+        },
+        "summary": {
+          "type": "string",
+          "description": "决策摘要",
+          "maxLength": 500,
+          "examples": ["高置信度通过，所有维度均符合要求"]
+        }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "各维度核实结果",
+      "required": ["existence", "name", "location", "category"],
+      "properties": {
+        "existence": {
+          "$ref": "#/definitions/dimension_result"
+        },
+        "name": {
+          "$ref": "#/definitions/dimension_result"
+        },
+        "location": {
+          "$ref": "#/definitions/dimension_result"
+        },
+        "category": {
+          "$ref": "#/definitions/dimension_result"
+        },
+        "administrative": {
+          "$ref": "#/definitions/dimension_result"
+        },
+        "timeliness": {
+          "$ref": "#/definitions/dimension_result"
+        }
+      }
+    },
+    "evidence_summary": {
+      "type": "object",
+      "description": "证据汇总信息",
+      "properties": {
+        "total_count": {
+          "type": "integer",
+          "description": "证据总数",
+          "minimum": 0
+        },
+        "valid_count": {
+          "type": "integer",
+          "description": "有效证据数",
+          "minimum": 0
+        },
+        "high_weight_count": {
+          "type": "integer",
+          "description": "高权重证据数",
+          "minimum": 0
+        },
+        "source_distribution": {
+          "type": "object",
+          "description": "来源分布",
+          "properties": {
+            "official": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "map_vendor": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "internet": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "downgrade_info": {
+      "type": "object",
+      "description": "降级信息（如发生降级）",
+      "properties": {
+        "is_downgraded": {
+          "type": "boolean",
+          "description": "是否发生降级"
+        },
+        "reason_code": {
+          "type": "string",
+          "description": "降级原因编码",
+          "enum": [
+            "INSUFFICIENT_EVIDENCE",
+            "SOURCE_CONFLICT",
+            "LOW_CONFIDENCE",
+            "MISSING_MANDATORY_DIMENSION",
+            "OUTDATED_DATA",
+            "SENSITIVE_DATA",
+            "POLICY_CHANGE",
+            "OTHER"
+          ]
+        },
+        "reason_description": {
+          "type": "string",
+          "description": "降级原因描述",
+          "maxLength": 500
+        },
+        "trigger_conditions": {
+          "type": "array",
+          "description": "触发的降级条件",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendation": {
+          "type": "string",
+          "description": "后续处理建议",
+          "maxLength": 500
+        }
+      }
+    },
+    "corrections": {
+      "type": "object",
+      "description": "建议的修正内容",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "string"
+            },
+            "suggested": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "string"
+            },
+            "suggested": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "object",
+              "properties": {
+                "longitude": {
+                  "type": "number"
+                },
+                "latitude": {
+                  "type": "number"
+                }
+              }
+            },
+            "suggested": {
+              "type": "object",
+              "properties": {
+                "longitude": {
+                  "type": "number"
+                },
+                "latitude": {
+                  "type": "number"
+                }
+              }
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "category": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "string"
+            },
+            "suggested": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "决策创建时间",
+      "format": "date-time"
+    },
+    "processed_at": {
+      "type": "string",
+      "description": "决策处理完成时间",
+      "format": "date-time"
+    },
+    "processing_duration_ms": {
+      "type": "integer",
+      "description": "处理耗时（毫秒）",
+      "minimum": 0
+    },
+    "version": {
+      "type": "string",
+      "description": "决策版本",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0"]
+    }
+  },
+  "definitions": {
+    "dimension_result": {
+      "type": "object",
+      "description": "单个维度的核实结果",
+      "required": ["result", "confidence"],
+      "properties": {
+        "result": {
+          "type": "string",
+          "description": "维度判断结果",
+          "enum": ["pass", "fail", "uncertain"],
+          "examples": ["pass"]
+        },
+        "confidence": {
+          "type": "number",
+          "description": "维度置信度",
+          "minimum": 0,
+          "maximum": 1,
+          "examples": [0.95]
+        },
+        "score": {
+          "type": "number",
+          "description": "维度评分",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "description": "引用的证据ID列表",
+          "items": {
+            "type": "string"
+          }
+        },
+        "details": {
+          "type": "object",
+          "description": "维度详细信息",
+          "properties": {
+            "matched_value": {
+              "type": "string",
+              "description": "匹配的值"
+            },
+            "similarity": {
+              "type": "number",
+              "description": "相似度",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "distance": {
+              "type": "number",
+              "description": "距离（米）",
+              "minimum": 0
+            },
+            "notes": {
+              "type": "string",
+              "description": "备注说明",
+              "maxLength": 500
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "decision_id": "DEC_202401150001",
+      "poi_id": "HOSPITAL_BJ_001",
+      "overall": {
+        "status": "accepted",
+        "confidence": 0.92,
+        "action": "adopt",
+        "summary": "高置信度通过，所有维度均符合要求"
+      },
+      "dimensions": {
+        "existence": {
+          "result": "pass",
+          "confidence": 0.95,
+          "score": 0.95,
+          "evidence_refs": ["EVD_001", "EVD_002"]
+        },
+        "name": {
+          "result": "pass",
+          "confidence": 1.0,
+          "score": 1.0,
+          "evidence_refs": ["EVD_001"],
+          "details": {
+            "matched_value": "北京大学第一医院",
+            "similarity": 1.0
+          }
+        },
+        "location": {
+          "result": "pass",
+          "confidence": 0.90,
+          "score": 0.90,
+          "evidence_refs": ["EVD_001", "EVD_003"],
+          "details": {
+            "distance": 12.5
+          }
+        },
+        "category": {
+          "result": "pass",
+          "confidence": 0.95,
+          "score": 0.95,
+          "evidence_refs": ["EVD_001"]
+        }
+      },
+      "evidence_summary": {
+        "total_count": 3,
+        "valid_count": 3,
+        "high_weight_count": 2,
+        "source_distribution": {
+          "official": 1,
+          "map_vendor": 2,
+          "internet": 0
+        }
+      },
+      "created_at": "2024-01-15T08:40:00Z",
+      "processed_at": "2024-01-15T08:40:05Z",
+      "processing_duration_ms": 5000,
+      "version": "1.0.0"
+    }
+  ]
+}
